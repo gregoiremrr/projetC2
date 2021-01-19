@@ -9,7 +9,6 @@ int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd){
     int i = chateau->x, j = chateau->y;
     int* tab = malloc(2*sizeof(int));
     while(k!=8){
-        printf("%d\n", k);
         for(int n = -k; n<=k; n++){
             if((i-k >= 0 && i-k <= 7 && j+n >= 0 && j+n <= 7) && monde->plateau[i-k][j+n]->perso == NULL){
                 tab[0] = i-k;
@@ -45,6 +44,7 @@ int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd){
             return tab;
         }
     }
+    return NULL;
 }
 
 void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
@@ -64,4 +64,11 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     nvPerso->next = NULL;
     nvPerso->previous->next = nvPerso;
     monde->plateau[cLibre[0]][cLibre[1]]->perso = nvPerso;
+}
+
+void deletePerso(Monde* monde, Personnage* perso){
+    monde->plateau[perso->x][perso->y]->perso = NULL;
+    perso->previous->next = perso->next;
+    perso->next->previous = perso->previous;
+    free(perso);
 }

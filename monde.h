@@ -15,6 +15,7 @@ typedef struct perso {
     int tpsProd;
     nomPerso typeProd;
     struct perso* next,* previous;
+    struct perso* vNext,* vPrevious;
 } Personnage;
 
 typedef struct {

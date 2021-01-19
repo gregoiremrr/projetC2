@@ -11,4 +11,6 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd);
 
 int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd);
 
+void deletePerso(Monde* monde, Personnage* perso);
+
 #endif

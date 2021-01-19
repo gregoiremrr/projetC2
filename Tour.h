@@ -6,12 +6,16 @@
 
 #include "monde.h"
 
-void actionChateau(Personnage* chateau, int* tresor);
+void actionChateau(Monde* monde, Personnage* chateau, int* tresor);
 
-void actionSeigneur(Personnage* perso, int* tresor);
+void actionSeigneur(Monde* monde, Personnage* perso, int* tresor);
 
-void actionGuerrier(Personnage* perso, int* tresor);
+void actionGuerrier(Monde* monde, Personnage* perso, int* tresor);
 
-void actionManant(Personnage* perso, int* tresor);
+void actionManant(Monde* monde, Personnage* perso, int* tresor);
+
+int comptePerso(Monde* monde, Couleur couleur);
+
+void tour(Monde* monde, Couleur couleur, int* tresor);
 
 #endif
