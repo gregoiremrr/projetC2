@@ -36,98 +36,97 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor){
 }
 
 void actionSeigneur(Monde* monde, Personnage* perso, int* tresor){
-        char act;
-        int nDest1;
-        int nDest2;
+        char act = 'n';
         if (perso->x == perso->xDest && perso->y == perso->yDest){
-          do{
+          printf("Donner une action pour le seigneur\n");
+          scanf("%c", &act);
+          while ((act != 's') && (act != 'D') && (act != 'I') ){
             printf("Donner une action pour le seigneur\n");
             scanf("%c", &act);
-        } while ((act != 's') && (act != 'D') && (act != 'I') );
+          } 
         }
         else{
-          if (perso->x > nDest1)
+          if (perso->x > perso->xDest)
              perso->x -= 1;
-          else if (perso->x < nDest1)
+          else if (perso->x < perso->xDest)
               perso->x += 1;
-          if (perso->y > nDest2)
+          if (perso->y > perso->yDest)
               perso->y -= 1;
-           else if (perso->y < nDest2)
+           else if (perso->y < perso->yDest)
               perso->y += 1;
           do{
             printf("Donner une action pour le seigneur\n");
             scanf("%c", &act);
           } while (act == 'I' && *tresor < 30);
-          
-          switch(act){
-            case 's' : deletePerso(monde, perso);
-                    break;
-            case 'D' : do{
-                        printf("Donner la nouvelle destination");
-                        scanf("%d",&nDest1);
-                        scanf("%d",&nDest2);
-                      } while ((nDest1 == perso->x && nDest2 == perso->y) || (nDest1 < 0) || (nDest2 < 0));
-                      if (perso->x > nDest1)
-                          perso->x-=1;
-                      else if (perso->x < nDest1)
-                          perso->x+=1;
-                      if (perso->y > nDest2)
-                          perso->y-=1;
-                      else if (perso->y < nDest2)
-                          perso->y+=1;
+          if (act != 'n'){
+            switch(act){
+              case 's' : deletePerso(monde, perso);
                       break;
-            // case 'I' : creerChateau(Personnage* chateau); pour la liste voisine
-                      // break;
-           }
+              case 'D' : do{
+                          printf("Donner la nouvelle destination");
+                          scanf("%d",&perso->xDest);
+                          scanf("%d",&perso->yDest);
+                        } while ((perso->xDest == perso->x && perso->yDest == perso->y) || (perso->xDest < 0) || (perso->yDest < 0));
+                        if (perso->x > perso->xDest)
+                            perso->x-=1;
+                        else if (perso->x < perso->xDest)
+                            perso->x+=1;
+                        if (perso->y > perso->yDest)
+                            perso->y-=1;
+                        else if (perso->y < perso->yDest)
+                            perso->y+=1;
+                        break;
+              // case 'I' : creerChateau(Personnage* chateau); pour la liste voisine
+                        // break;
+            }
+          }
   }
 }
 
 void actionGuerrier(Monde* monde, Personnage* perso, int* tresor){
-        char act;
-        int nDest1;
-        int nDest2;
+        char act = 'n';
         if (perso->x == perso->xDest && perso->y == perso->yDest){
           do{
             printf("Donner une action pour le guerrier\n");
             scanf("%c", &act);
-        } while ((act != 's') && (act != 'D'));
+          } while ((act != 's') && (act != 'D'));
         }
         else{
-          if (perso->x > nDest1)
+          if (perso->x > perso->xDest)
              perso->x -= 1;
-          else if (perso->x < nDest1)
+          else if (perso->x < perso->xDest)
               perso->x += 1;
-          if (perso->y > nDest2)
+          if (perso->y > perso->yDest)
               perso->y -= 1;
-           else if (perso->y < nDest2)
+           else if (perso->y < perso->yDest)
               perso->y += 1;
-              }
-          
-          switch(act){
-            case 's' : deletePerso(monde, perso);
-                    break;
-            case 'D' : do{
-                        printf("Donner la nouvelle destination");
-                        scanf("%d",&nDest1);
-                        scanf("%d",&nDest2);
-                      } while ((nDest1 == perso->x && nDest2 == perso->y) || (nDest1 < 0) || (nDest2 < 0));
-                      if (perso->x > nDest1)
-                          perso->x-=1;
-                      else if (perso->x < nDest1)
-                          perso->x+=1;
-                      if (perso->y > nDest2)
-                          perso->y-=1;
-                      else if (perso->y < nDest2)
-                          perso->y+=1;
+            }
+          if (act != 'n'){
+            switch(act){
+              case 's' : deletePerso(monde, perso);
                       break;
-          
-           }
-}
+              case 'D' : do{
+                          printf("Donner la nouvelle destination");
+                          scanf("%d",&perso->xDest);
+                          scanf("%d",&perso->yDest);
+                        } while ((perso->xDest == perso->x && perso->yDest == perso->y) || (perso->xDest < 0) || (perso->yDest < 0));
+                        if (perso->x > perso->xDest)
+                            perso->x-=1;
+                        else if (perso->x < perso->xDest)
+                            perso->x+=1;
+                        if (perso->y > perso->yDest)
+                            perso->y-=1;
+                        else if (perso->y < perso->yDest)
+                            perso->y+=1;
+                        break;
+            
+            }
+          }
+    }
+
 
 void actionManant(Monde* monde, Personnage* perso, int* tresor){
-  char act;
-        int nDest1;
-        int nDest2;
+  char act = 'n';
         if (perso->x == perso->xDest && perso->y == perso->yDest){
           do{
             printf("Donner une action pour le manant\n");
@@ -138,38 +137,40 @@ void actionManant(Monde* monde, Personnage* perso, int* tresor){
             tresor += 1;
         
         else{
-          if (perso->x > nDest1)
+          if (perso->x > perso->xDest)
              perso->x -= 1;
-          else if (perso->x < nDest1)
+          else if (perso->x < perso->xDest)
               perso->x += 1;
-          if (perso->y > nDest2)
+          if (perso->y > perso->yDest)
               perso->y -= 1;
-           else if (perso->y < nDest2)
+           else if (perso->y < perso->yDest)
               perso->y += 1;
            }
-        switch(act){
-            case 's' : deletePerso(monde, perso);
-                       break;
-            case 'D' : do{
-                        printf("Donner la nouvelle destination");
-                        scanf("%d",&nDest1);
-                        scanf("%d",&nDest2);
-                      } while ((nDest1 == perso->x && nDest2 == perso->y) || (nDest1 < 0 && nDest2 > 0) || (nDest1 > 0 && nDest2 < 0));
-                      if (nDest1 < 0 && nDest2 < 0)
-                        tresor += 1;
-                      else{
-                        if (perso->x > nDest1)
-                             perso->x -= 1;
-                        else if (perso->x < nDest1)
-                             perso->x += 1;
-                        if (perso->y > nDest2)
-                              perso->y -= 1;
-                        else if (perso->y < nDest2)
-                             perso->y += 1;
+        if(act != 'n'){
+          switch(act){
+              case 's' : deletePerso(monde, perso);
                         break;
+              case 'D' : do{
+                          printf("Donner la nouvelle destination");
+                          scanf("%d",&perso->xDest);
+                          scanf("%d",&perso->yDest);
+                        } while ((perso->xDest == perso->x && perso->yDest == perso->y) || (perso->xDest < 0 && perso->yDest > 0) || (perso->xDest > 0 && perso->yDest < 0));
+                        if (perso->xDest < 0 && perso->yDest < 0)
+                          tresor += 1;
+                        else{
+                          if (perso->x > perso->xDest)
+                              perso->x -= 1;
+                          else if (perso->x < perso->xDest)
+                              perso->x += 1;
+                          if (perso->y > perso->yDest)
+                                perso->y -= 1;
+                          else if (perso->y < perso->yDest)
+                              perso->y += 1;
+                          break;
+                        }
                       }
-}
-}
+                    }
+  } 
 
 void tour(Monde* monde, Couleur couleur, int* tresor){
   int k = 0;

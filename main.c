@@ -14,8 +14,10 @@ int main() {
     int debut = rand()%2;
     while(1){
         if(tourNum%2==debut){
+            printf("L'équipe bleue joue\n");
             tour(monde, Bleu, &tresorBleu);
         } else {
+            printf("L'équipe rouge joue\n");
             tour(monde, Rouge, &tresorRouge);
         }
         tourNum++;
