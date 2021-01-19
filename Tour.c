@@ -32,7 +32,7 @@ void actionChateau(Personnage* chateau, int* tresor){
     else 
       chateau->tpsProd -= 1;
     if (chateau->tpsProd == 1)
-      creerPerso(nomPerso nom); // fonction à écrire
+        creerPerso(chateau, chateau->typeProd); // fonction à écrire
     
 }
 
