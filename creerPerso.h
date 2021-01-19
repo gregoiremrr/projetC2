@@ -5,9 +5,10 @@
 #include<stdlib.h>
 
 #include "monde.h"
-#include "tour.h"
+//#include "tour.h"
 
 void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd);
 
+int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd);
 
 #endif
