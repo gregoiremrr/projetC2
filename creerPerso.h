@@ -7,7 +7,7 @@
 #include "monde.h"
 #include "tour.h"
 
-void creerPersonnage(Personnage* chateau, nomPerso typeProd);
+void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd);
 
 
 #endif

@@ -10,29 +10,28 @@ void actionChateau(Personnage* chateau, int* tresor){
         do{
           printf("Donner l'action pour le chateau\n");
           scanf("%c", &act);
-      } while ((act != 'S') && (act != 'G') && (act != 'M') && (act != 'R'));
-        switch(act){
-          case 'S' : chateau->tpsProd = 6;
+        } while ((act != 'S') && (act != 'G') && (act != 'M') && (act != 'R'));
+          switch(act){
+            case 'S' : chateau->tpsProd = 6;
                      tresor-= 20;
                      chateau->typeProd = Seigneur;
                      break;
-          case 'G' : chateau->tpsProd = 4;
+            case 'G' : chateau->tpsProd = 4;
                      tresor-= 5;
                      chateau->typeProd = Guerrier;
                      
                      break;
-          case 'M' : chateau->tpsProd = 2;
+            case 'M' : chateau->tpsProd = 2;
                      tresor-= 1;
                      chateau->typeProd = Manant;
                      break;
-          case 'R' : break;
-
+            case 'R' : break;
       }
     }
     else 
       chateau->tpsProd -= 1;
-    if (chateau->tpsProd == 1)
-        creerPerso(chateau, chateau->typeProd); // fonction à écrire
+    if (chateau->tpsProd == 0 && chateau->typeProd != nul)
+        creerPersonnage(chateau, chateau->typeProd); // fonction à écrire
     
 }
 

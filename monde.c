@@ -66,7 +66,6 @@ Monde* initMonde(void){
 void afficheMonde(Monde* monde){
     for (int i = 0; i<8; i++){
         for (int j = 0; j<8; j++){
-            //printf("%d et %d\n", i, j);
             if (monde->plateau[i][j]->perso != NULL){
                 if (monde->plateau[i][j]->perso->nom == Chateau) {
                     if (monde->plateau[i][j]->perso->couleur == Bleu) {
