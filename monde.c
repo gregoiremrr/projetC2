@@ -93,64 +93,21 @@ void afficheMonde(Monde *monde, int tresorBleu, int tresorRouge, Couleur couleur
         {
             if (monde->plateau[i][j]->perso != NULL)
             {
-                if (monde->plateau[i][j]->perso->nom == Chateau)
+                Personnage *perso = monde->plateau[i][j]->perso;
+                if (perso->vNext != NULL)
                 {
-                    if (monde->plateau[i][j]->perso->couleur == Bleu)
+                    if (perso->vNext->vPrevious == perso)
                     {
-
-                        printf("| (Cb%d) ", incrementAndGet(
-                                                monde->plateau[i][j]->perso->couleur,
-                                                monde->plateau[i][j]->perso->nom));
+                        afficheDeuxPersonage(perso);
                     }
                     else
                     {
-                        printf("| (Cr%d) ", incrementAndGet(
-                                                monde->plateau[i][j]->perso->couleur,
-                                                monde->plateau[i][j]->perso->nom));
+                        affichePersonage(perso);
                     }
                 }
-                else if (monde->plateau[i][j]->perso->nom == Seigneur)
+                else
                 {
-                    if (monde->plateau[i][j]->perso->couleur == Bleu)
-                    {
-                        printf("| (Sb%d) ", incrementAndGet(
-                                                monde->plateau[i][j]->perso->couleur,
-                                                monde->plateau[i][j]->perso->nom));
-                    }
-                    else
-                    {
-                        printf("| (Sr%d) ", incrementAndGet(
-                                                monde->plateau[i][j]->perso->couleur,
-                                                monde->plateau[i][j]->perso->nom));
-                    }
-                }
-                else if (monde->plateau[i][j]->perso->nom == Guerrier)
-                {
-                    if (monde->plateau[i][j]->perso->couleur == Bleu)
-                    {
-                        printf("| (Gb%d) ", incrementAndGet(
-                                                monde->plateau[i][j]->perso->couleur,
-                                                monde->plateau[i][j]->perso->nom));
-                    }
-                    else
-                    {
-                        printf("| (Gr%d) ", incrementAndGet(monde->plateau[i][j]->perso->couleur, monde->plateau[i][j]->perso->nom));
-                    }
-                }
-                else if (monde->plateau[i][j]->perso->nom == Manant)
-                {
-                    if (monde->plateau[i][j]->perso->couleur == Bleu)
-                    {
-                        printf("| (Mb%d) ", incrementAndGet(
-                                                monde->plateau[i][j]->perso->couleur,
-                                                monde->plateau[i][j]->perso->nom));
-                    }
-                    else
-                    {
-                        printf("| (Mr%d) ", incrementAndGet(
-                                                monde->plateau[i][j]->perso->couleur,
-                                                monde->plateau[i][j]->perso->nom));
-                    }
+                    affichePersonage(perso);
                 }
             }
             else
@@ -159,6 +116,193 @@ void afficheMonde(Monde *monde, int tresorBleu, int tresorRouge, Couleur couleur
             }
         }
         printf("|\n");
+    }
+}
+
+void affichePersonage(Personnage *perso)
+{
+    if (perso->nom == Chateau)
+    {
+        if (perso->couleur == Bleu)
+        {
+
+            printf("| (Cb%d) ", incrementAndGet(
+                                    perso->couleur,
+                                    perso->nom));
+        }
+        else
+        {
+            printf("| (Cr%d) ", incrementAndGet(
+                                    perso->couleur,
+                                    perso->nom));
+        }
+    }
+    else if (perso->nom == Seigneur)
+    {
+        if (perso->couleur == Bleu)
+        {
+            printf("| (Sb%d) ", incrementAndGet(
+                                    perso->couleur,
+                                    perso->nom));
+        }
+        else
+        {
+            printf("| (Sr%d) ", incrementAndGet(
+                                    perso->couleur,
+                                    perso->nom));
+        }
+    }
+    else if (perso->nom == Guerrier)
+    {
+        if (perso->couleur == Bleu)
+        {
+            printf("| (Gb%d) ", incrementAndGet(
+                                    perso->couleur,
+                                    perso->nom));
+        }
+        else
+        {
+            printf("| (Gr%d) ", incrementAndGet(perso->couleur, perso->nom));
+        }
+    }
+    else if (perso->nom == Manant)
+    {
+        if (perso->couleur == Bleu)
+        {
+            printf("| (Mb%d) ", incrementAndGet(
+                                    perso->couleur,
+                                    perso->nom));
+        }
+        else
+        {
+            printf("| (Mr%d) ", incrementAndGet(
+                                    perso->couleur,
+                                    perso->nom));
+        }
+    }
+}
+void afficheDeuxPersonage(Personnage *perso)
+{
+    // first
+    if (perso->nom == Chateau)
+    {
+        if (perso->couleur == Bleu)
+        {
+
+            printf("| (Cb%d-", incrementAndGet(
+                                   perso->couleur,
+                                   perso->nom));
+        }
+        else
+        {
+            printf("| (Cr%d-", incrementAndGet(
+                                   perso->couleur,
+                                   perso->nom));
+        }
+    }
+    else if (perso->nom == Seigneur)
+    {
+        if (perso->couleur == Bleu)
+        {
+            printf("| (Sb%d-", incrementAndGet(
+                                   perso->couleur,
+                                   perso->nom));
+        }
+        else
+        {
+            printf("| (Sr%d-", incrementAndGet(
+                                   perso->couleur,
+                                   perso->nom));
+        }
+    }
+    else if (perso->nom == Guerrier)
+    {
+        if (perso->couleur == Bleu)
+        {
+            printf("| (Gb%d-", incrementAndGet(
+                                   perso->couleur,
+                                   perso->nom));
+        }
+        else
+        {
+            printf("| (Gr%d-", incrementAndGet(perso->couleur, perso->nom));
+        }
+    }
+    else if (perso->nom == Manant)
+    {
+        if (perso->couleur == Bleu)
+        {
+            printf("| (Mb%d-", incrementAndGet(
+                                   perso->couleur,
+                                   perso->nom));
+        }
+        else
+        {
+            printf("| (Mr%d-", incrementAndGet(
+                                   perso->couleur,
+                                   perso->nom));
+        }
+    }
+
+    // second
+    if (perso->vNext->nom == Chateau)
+    {
+        if (perso->vNext->couleur == Bleu)
+        {
+
+            printf("%d) ", incrementAndGet(
+                               perso->vNext->couleur,
+                               perso->vNext->nom));
+        }
+        else
+        {
+            printf("%d) ", incrementAndGet(
+                               perso->vNext->couleur,
+                               perso->vNext->nom));
+        }
+    }
+    else if (perso->vNext->nom == Seigneur)
+    {
+        if (perso->vNext->couleur == Bleu)
+        {
+            printf("%d) ", incrementAndGet(
+                               perso->vNext->couleur,
+                               perso->vNext->nom));
+        }
+        else
+        {
+            printf("%d) ", incrementAndGet(
+                               perso->vNext->couleur,
+                               perso->vNext->nom));
+        }
+    }
+    else if (perso->vNext->nom == Guerrier)
+    {
+        if (perso->vNext->couleur == Bleu)
+        {
+            printf("%d) ", incrementAndGet(
+                               perso->vNext->couleur,
+                               perso->vNext->nom));
+        }
+        else
+        {
+            printf("%d) ", incrementAndGet(perso->vNext->couleur, perso->vNext->nom));
+        }
+    }
+    else if (perso->vNext->nom == Manant)
+    {
+        if (perso->vNext->couleur == Bleu)
+        {
+            printf("%d) ", incrementAndGet(
+                               perso->vNext->couleur,
+                               perso->vNext->nom));
+        }
+        else
+        {
+            printf("%d) ", incrementAndGet(
+                               perso->vNext->couleur,
+                               perso->vNext->nom));
+        }
     }
 }
 

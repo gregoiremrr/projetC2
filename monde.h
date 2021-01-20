@@ -44,6 +44,8 @@ typedef struct
 Monde *initMonde(void);
 
 void afficheMonde(Monde *monde, int tresorBleu, int tresorRouge, Couleur couleur);
+void affichePersonage(Personnage *perso);
+void afficheDeuxPersonage(Personnage *perso);
 void initCounters();
 int incrementAndGet(Couleur color, nomPerso perso);
 #endif
