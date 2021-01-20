@@ -42,6 +42,8 @@ Monde* initMonde(void){
     monde->chateauRouge->tpsProd = 0;
     monde->chateauRouge->typeProd = nul;
     monde->chateauRouge->previous = NULL;
+    monde->chateauRouge->vNext = NULL;
+    monde->chateauRouge->vPrevious = NULL;
     monde->plateau[7][7]->perso = monde->chateauRouge;
     initPerso(monde, Seigneur, 7, 6, Rouge, monde->chateauRouge);
     initPerso(monde, Manant, 6, 7, Rouge, monde->chateauRouge);
@@ -56,6 +58,8 @@ Monde* initMonde(void){
     monde->chateauBleu->tpsProd = 0;
     monde->chateauBleu->typeProd = nul;
     monde->chateauBleu->previous = NULL;
+    monde->chateauBleu->vNext = NULL;
+    monde->chateauBleu->vPrevious = NULL;
     monde->plateau[0][0]->perso = monde->chateauBleu;
     initPerso(monde , Seigneur , 0 , 1 , Bleu , monde->chateauBleu);
     initPerso(monde , Manant , 1, 0 , Bleu , monde->chateauBleu);
@@ -63,7 +67,13 @@ Monde* initMonde(void){
     return monde;
 }
 
-void afficheMonde(Monde* monde){
+void afficheMonde(Monde* monde, int tresorBleu, int tresorRouge, Couleur couleur){
+    if (couleur == Bleu){
+        printf("Tresor bleu  : %d\nTresor rouge : %d\n", tresorBleu, tresorRouge);
+    } else {
+        printf("Tresor bleu  : %d\nTresor rouge : %d\n", tresorRouge, tresorBleu);
+    }
+    
     for (int i = 0; i<8; i++){
         for (int j = 0; j<8; j++){
             if (monde->plateau[i][j]->perso != NULL){

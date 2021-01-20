@@ -8,17 +8,20 @@
 
 int main() {
     Monde* monde = initMonde();
-    int tresorRouge = 50, tresorBleu = 50;
+    int* tresorRouge = malloc(sizeof(int)),* tresorBleu = malloc(sizeof(int));
+    *tresorRouge = 50;
+    *tresorBleu = 50;
     int tourNum = 0;
     srand(time(NULL));
     int debut = rand()%2;
+    afficheMonde(monde, *tresorBleu, *tresorRouge, Bleu);
     while(1){
         if(tourNum%2==debut){
             printf("L'équipe bleue joue\n");
-            tour(monde, Bleu, &tresorBleu);
+            tour(monde, Bleu, tresorBleu, tresorRouge);
         } else {
             printf("L'équipe rouge joue\n");
-            tour(monde, Rouge, &tresorRouge);
+            tour(monde, Rouge, tresorRouge, tresorBleu);
         }
         tourNum++;
     }

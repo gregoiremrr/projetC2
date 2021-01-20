@@ -56,6 +56,8 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     nvPerso->y = cLibre[1];
     nvPerso->xDest = nvPerso->x;
     nvPerso->yDest = nvPerso->y;
+    nvPerso->vNext = NULL;
+    nvPerso->vPrevious = NULL;
     Personnage* prev = chateau;
     while (prev->next){
         prev = prev->next;
@@ -68,7 +70,42 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
 
 void deletePerso(Monde* monde, Personnage* perso){
     monde->plateau[perso->x][perso->y]->perso = NULL;
-    perso->previous->next = perso->next;
-    perso->next->previous = perso->previous;
+    if (perso->previous == NULL){
+        Personnage* persoI = perso;
+        while (persoI != NULL) {
+            persoI = perso->next;
+            free(persoI->previous);
+        }
+        free(persoI);
+    } else {
+        perso->previous->next = perso->next;
+        if (perso->next != NULL){
+            perso->next->previous = perso->previous;
+        }
+    }
     free(perso);
+}
+
+void creerChateau(Monde* monde, Personnage* perso){
+    int x = perso->x;
+    int y = perso->y;
+    Personnage* chateau = perso;
+    while(chateau->previous != NULL){
+        chateau = chateau->previous;
+    }
+    Couleur couleur = perso->couleur;
+    deletePerso(monde, perso);
+    Personnage* nvChateau = malloc(sizeof(Personnage));
+    nvChateau->nom = Chateau;
+    nvChateau->couleur = couleur;
+    nvChateau->x = x;
+    nvChateau->y = y;
+    nvChateau->xDest = nvChateau->x;
+    nvChateau->yDest = nvChateau->y;
+    nvChateau->vNext = NULL;
+    nvChateau->vPrevious = chateau;
+    chateau->vNext = nvChateau;
+    nvChateau->tpsProd = 0;
+    nvChateau->typeProd = nul;
+    monde->plateau[x][y]->perso = nvChateau;
 }

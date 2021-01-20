@@ -29,6 +29,6 @@ typedef struct {
 
 Monde* initMonde(void);
 
-void afficheMonde(Monde* monde);
+void afficheMonde(Monde* monde, int tresorBleu, int tresorRouge, Couleur couleur);
 
 #endif
