@@ -72,52 +72,58 @@ Monde *initMonde(void)
     return monde;
 }
 
+
 // Globales
 int r_chateau = 0, r_guerrier = 0, r_seigneur = 0, r_manant = 0;
 int b_chateau = 0, b_guerrier = 0, b_seigneur = 0, b_manant = 0;
-void afficheMonde(Monde *monde, int tresorBleu, int tresorRouge, Couleur couleur)
+
+void initCounters()
 {
-    if (couleur == Bleu)
+    r_chateau = 0;
+    r_guerrier = 0;
+    r_seigneur = 0;
+    r_manant = 0;
+    b_chateau = 0;
+    b_guerrier = 0;
+    b_seigneur = 0;
+    b_manant = 0;
+}
+int incrementAndGet(Couleur color, nomPerso perso)
+{
+    if (color == Rouge)
     {
-        printf("Tresor bleu  : %d\nTresor rouge : %d\n", tresorBleu, tresorRouge);
+        switch (perso)
+        {
+        case Chateau:
+            return ++r_chateau;
+        case Guerrier:
+            return ++r_guerrier;
+        case Seigneur:
+            return ++r_seigneur;
+        case Manant:
+            return ++r_manant;
+        default:
+            return -1;
+        }
     }
     else
     {
-        printf("Tresor bleu  : %d\nTresor rouge : %d\n", tresorRouge, tresorBleu);
-    }
-
-    initCounters();
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
+        switch (perso)
         {
-            if (monde->plateau[i][j]->perso != NULL)
-            {
-                Personnage *perso = monde->plateau[i][j]->perso;
-                if (perso->vNext != NULL)
-                {
-                    if (perso->vNext->vPrevious == perso)
-                    {
-                        afficheDeuxPersonage(perso);
-                    }
-                    else
-                    {
-                        affichePersonage(perso);
-                    }
-                }
-                else
-                {
-                    affichePersonage(perso);
-                }
-            }
-            else
-            {
-                printf("| ---- ");
-            }
+        case Chateau:
+            return ++b_chateau;
+        case Guerrier:
+            return ++b_guerrier;
+        case Seigneur:
+            return ++b_seigneur;
+        case Manant:
+            return ++b_manant;
+        default:
+            return -1;
         }
-        printf("|\n");
     }
 }
+
 
 void affichePersonage(Personnage *perso)
 {
@@ -306,49 +312,48 @@ void afficheDeuxPersonage(Personnage *perso)
     }
 }
 
-void initCounters()
+
+void afficheMonde(Monde *monde, int tresorBleu, int tresorRouge, Couleur couleur)
 {
-    r_chateau = 0;
-    r_guerrier = 0;
-    r_seigneur = 0;
-    r_manant = 0;
-    b_chateau = 0;
-    b_guerrier = 0;
-    b_seigneur = 0;
-    b_manant = 0;
-}
-int incrementAndGet(Couleur color, nomPerso perso)
-{
-    if (color == Rouge)
+    if (couleur == Bleu)
     {
-        switch (perso)
-        {
-        case Chateau:
-            return ++r_chateau;
-        case Guerrier:
-            return ++r_guerrier;
-        case Seigneur:
-            return ++r_seigneur;
-        case Manant:
-            return ++r_manant;
-        default:
-            return -1;
-        }
+        printf("Tresor bleu  : %d\nTresor rouge : %d\n", tresorBleu, tresorRouge);
     }
     else
     {
-        switch (perso)
+        printf("Tresor bleu  : %d\nTresor rouge : %d\n", tresorRouge, tresorBleu);
+    }
+
+    initCounters();
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
         {
-        case Chateau:
-            return ++b_chateau;
-        case Guerrier:
-            return ++b_guerrier;
-        case Seigneur:
-            return ++b_seigneur;
-        case Manant:
-            return ++b_manant;
-        default:
-            return -1;
+            if (monde->plateau[i][j]->perso != NULL)
+            {
+                Personnage *perso = monde->plateau[i][j]->perso;
+                if (perso->vNext != NULL)
+                {
+                    if (perso->vNext->vPrevious == perso)
+                    {
+                        afficheDeuxPersonage(perso);
+                    }
+                    else
+                    {
+                        affichePersonage(perso);
+                    }
+                }
+                else
+                {
+                    affichePersonage(perso);
+                }
+            }
+            else
+            {
+                printf("| ---- ");
+            }
         }
+        printf("|\n");
     }
 }
+

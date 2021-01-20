@@ -5,6 +5,8 @@
 #include<stdlib.h>
 
 #include "monde.h"
+#include "gererVoisins.h"
+
 
 void actionChateau(Monde* monde, Personnage* chateau, int* tresor);
 
