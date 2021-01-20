@@ -10,7 +10,7 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor){
         do{
           printf("Donner l'action pour le chateau\n");
           scanf("%c", &act);
-        } while ((act != 'S') && (act != 'G') && (act != 'M') && (act != 'R'));
+        } while ((act != 'S') && (act != 'G')  &&(act != 'M') &&  (act != 'R'));
           switch(act){
             case 'S' : chateau->tpsProd = 6;
                      tresor-= 20;
@@ -43,6 +43,7 @@ void actionSeigneur(Monde* monde, Personnage* perso, int* tresor){
           while ((act != 's') && (act != 'D') && (act != 'I') ){
             printf("Donner une action pour le seigneur\n");
             scanf("%c", &act);
+            break;
           } 
         }
         else{
@@ -55,7 +56,7 @@ void actionSeigneur(Monde* monde, Personnage* perso, int* tresor){
            else if (perso->y < perso->yDest)
               perso->y += 1;
           do{
-            printf("Donner une action pour le seigneur\n");
+            printf("Tresor insuffisant. Donner une action pour le seigneur\n");
             scanf("%c", &act);
           } while (act == 'I' && *tresor < 30);
           if (act != 'n'){
