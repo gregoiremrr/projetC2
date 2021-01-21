@@ -5,7 +5,7 @@
 #include<stdlib.h>
 
 #include "monde.h"
-//#include "tour.h"
+//#include "Tour.h"
 
 void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd);
 

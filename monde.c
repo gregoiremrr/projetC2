@@ -49,6 +49,8 @@ Monde *initMonde(void)
     monde->chateauRouge->previous = NULL;
     monde->chateauRouge->vNext = NULL;
     monde->chateauRouge->vPrevious = NULL;
+    monde->chateauRouge->cNext = NULL;
+    monde->chateauRouge->cPrevious = NULL;
     monde->plateau[7][7]->perso = monde->chateauRouge;
     initPerso(monde, Seigneur, 7, 6, Rouge, monde->chateauRouge);
     initPerso(monde, Manant, 6, 7, Rouge, monde->chateauRouge);
@@ -350,6 +352,7 @@ void afficheMonde(Monde *monde, int tresorBleu, int tresorRouge, Couleur couleur
             }
             else
             {
+                monde->plateau[i][j]->perso = NULL;
                 printf("| ---- ");
             }
         }

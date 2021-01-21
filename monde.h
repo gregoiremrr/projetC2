@@ -28,6 +28,7 @@ typedef struct perso
     nomPerso typeProd;
     struct perso *next, *previous;
     struct perso *vNext, *vPrevious;
+    struct perso *cNext, *cPrevious;
 } Personnage;
 
 typedef struct

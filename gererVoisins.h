@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
 
-#include "monde.h"
 #include "Tour.h"
+#include "monde.h"
 
-void ifVoisin(Monde* monde, Personnage *persoV);
+void ifVoisins(Monde* monde, Personnage* perso);

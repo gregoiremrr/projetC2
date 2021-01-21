@@ -5,7 +5,7 @@
 #include "monde.h"
 #include "creerPerso.h"
 #include "Tour.h"
-#include "gererVoisins.h"
+#include "gererDep.h"
 
 int main() {
     Monde* monde = initMonde();

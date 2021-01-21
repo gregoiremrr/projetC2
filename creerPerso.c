@@ -56,6 +56,8 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     nvPerso->y = cLibre[1];
     nvPerso->xDest = nvPerso->x;
     nvPerso->yDest = nvPerso->y;
+    nvPerso->cNext = NULL;
+    nvPerso->cPrevious = NULL;
     nvPerso->vNext = NULL;
     nvPerso->vPrevious = NULL;
     Personnage* prev = chateau;
@@ -103,8 +105,10 @@ void creerChateau(Monde* monde, Personnage* perso){
     nvChateau->xDest = nvChateau->x;
     nvChateau->yDest = nvChateau->y;
     nvChateau->vNext = NULL;
-    nvChateau->vPrevious = chateau;
-    chateau->vNext = nvChateau;
+    nvChateau->vPrevious = NULL;
+    nvChateau->cNext = NULL;
+    nvChateau->cPrevious = chateau;
+    chateau->cNext = nvChateau;
     nvChateau->tpsProd = 0;
     nvChateau->typeProd = nul;
     monde->plateau[x][y]->perso = nvChateau;

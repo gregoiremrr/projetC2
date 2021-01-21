@@ -4,6 +4,7 @@
 #include "monde.h"
 #include "creerPerso.h"
 #include "gererVoisins.h"
+#include"gererDep.h"
 
 void actionChateau(Monde *monde, Personnage *chateau, int *tresor)
 {
@@ -71,15 +72,7 @@ void actionSeigneur(Monde *monde, Personnage *perso, int *tresor)
   else
   {
     printf("Le personnage %u est en déplacement\n", perso->nom);
-    if (perso->x > perso->xDest)
-      perso->x -= 1;
-    else if (perso->x < perso->xDest)
-      perso->x += 1;
-    if (perso->y > perso->yDest)
-      perso->y -= 1;
-    else if (perso->y < perso->yDest)
-      perso->y += 1;
-    ifVoisin(monde, perso);
+    gererDep(monde,perso);
   
   }
 
@@ -105,15 +98,7 @@ void actionSeigneur(Monde *monde, Personnage *perso, int *tresor)
         perso->xDest -= 1;
       } while ((perso->xDest == perso->x && perso->yDest == perso->y) || (perso->xDest < 0) ||
                (perso->yDest < 0) || perso->xDest > 7 || perso->yDest > 7);
-      if (perso->x > perso->xDest)
-        perso->x -= 1;
-      else if (perso->x < perso->xDest)
-        perso->x += 1;
-      if (perso->y > perso->yDest)
-        perso->y -= 1;
-      else if (perso->y < perso->yDest)
-        perso->y += 1;
-      ifVoisin(monde, perso);
+      gererDep(monde,perso);
       break;
     case 'I':
       creerChateau(monde, perso);
@@ -136,15 +121,7 @@ void actionGuerrier(Monde *monde, Personnage *perso, int *tresor)
   else
   {
     printf("Le personnage %u est en déplacement \n", perso->nom);
-    if (perso->x > perso->xDest)
-      perso->x -= 1;
-    else if (perso->x < perso->xDest)
-      perso->x += 1;
-    if (perso->y > perso->yDest)
-      perso->y -= 1;
-    else if (perso->y < perso->yDest)
-      perso->y += 1;
-    ifVoisin(monde, perso);
+    gererDep(monde,perso);
   }
   if (act != 'n')
   {
@@ -163,15 +140,7 @@ void actionGuerrier(Monde *monde, Personnage *perso, int *tresor)
         perso->xDest -= 1;
       } while ((perso->xDest == perso->x && perso->yDest == perso->y) || (perso->xDest < 0) ||
                (perso->yDest < 0) || perso->xDest > 7 || perso->yDest > 7);
-      if (perso->x > perso->xDest)
-        perso->x -= 1;
-      else if (perso->x < perso->xDest)
-        perso->x += 1;
-      if (perso->y > perso->yDest)
-        perso->y -= 1;
-      else if (perso->y < perso->yDest)
-        perso->y += 1;
-      ifVoisin(monde, perso);
+      gererDep(monde,perso);
       break;
     }
   }
@@ -196,15 +165,7 @@ void actionManant(Monde *monde, Personnage *perso, int *tresor)
     else
     {
       printf("Le personnage %u est en déplacement\n", perso->nom);
-      if (perso->x > perso->xDest)
-        perso->x -= 1;
-      else if (perso->x < perso->xDest)
-        perso->x += 1;
-      if (perso->y > perso->yDest)
-        perso->y -= 1;
-      else if (perso->y < perso->yDest)
-        perso->y += 1;
-      ifVoisin(monde, perso);
+      gererDep(monde,perso);
     }
     if (act != 'n')
     {
@@ -226,15 +187,7 @@ void actionManant(Monde *monde, Personnage *perso, int *tresor)
           *tresor += 1;
         else
         {
-          if (perso->x > perso->xDest)
-            perso->x -= 1;
-          else if (perso->x < perso->xDest)
-            perso->x += 1;
-          if (perso->y > perso->yDest)
-            perso->y -= 1;
-          else if (perso->y < perso->yDest)
-            perso->y += 1;
-          ifVoisin(monde, perso);
+          gererDep(monde,perso);
           break;
         }
       }
