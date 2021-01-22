@@ -5,14 +5,13 @@
 #include<stdlib.h>
 
 #include "monde.h"
-//#include "Tour.h"
-
-void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd);
-
-void creerChateau(Monde* monde, Personnage* perso);
 
 int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd);
 
+void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd);
+
 void deletePerso(Monde* monde, Personnage* perso);
+
+void creerChateau(Monde* monde, Personnage* perso);
 
 #endif

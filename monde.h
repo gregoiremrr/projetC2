@@ -3,50 +3,41 @@
 
 #include <stdio.h>
 
-typedef enum
-{
-    Bleu,
-    Rouge
-} Couleur;
+ extern int partie;
 
-typedef enum
-{
-    Chateau,
-    Seigneur,
-    Guerrier,
-    Manant,
-    nul
-} nomPerso;
+typedef enum {Bleu, Rouge} Couleur;
 
-typedef struct perso
-{
+typedef enum {Chateau, Seigneur, Guerrier, Manant, nul} nomPerso;
+
+typedef struct perso {
     nomPerso nom;
     int x, y;
     int xDest, yDest;
     Couleur couleur;
     int tpsProd;
     nomPerso typeProd;
-    struct perso *next, *previous;
-    struct perso *vNext, *vPrevious;
-    struct perso *cNext, *cPrevious;
+    int num;
+    struct perso* next,* previous;
+    struct perso* vNext,* vPrevious;
+    int coupDeProd;
 } Personnage;
 
-typedef struct
-{
-    Personnage *perso;
+typedef struct {
+    Personnage* perso;
+    Personnage* chateau;
 } Case;
 
-typedef struct
-{
-    Case ***plateau;
-    Personnage *chateauRouge, *chateauBleu;
+typedef struct {
+    Case*** plateau;
+    Personnage* chateauRouge,* chateauBleu;
 } Monde;
 
-Monde *initMonde(void);
+void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Personnage* chateau);
 
-void afficheMonde(Monde *monde, int tresorBleu, int tresorRouge, Couleur couleur);
-void affichePersonage(Personnage *perso);
-void afficheDeuxPersonage(Personnage *perso);
-void initCounters();
-int incrementAndGet(Couleur color, nomPerso perso);
+Monde* initMonde(void);
+
+int incrementAndGet(Personnage* perso);
+
+void afficheMonde(Monde* monde, int tresorBleu, int tresorRouge, Couleur couleur, int t);
+
 #endif
