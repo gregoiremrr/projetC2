@@ -159,5 +159,6 @@ void creerChateau(Monde* monde, Personnage* perso){
     nvChateau->typeProd = nul;
     nvChateau->next = NULL;
     nvChateau->previous = NULL;
+    nvChateau->num = incrementAndGet(nvChateau);
     monde->plateau[x][y]->chateau = nvChateau;
 }

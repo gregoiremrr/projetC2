@@ -32,9 +32,9 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2)
             creerPersonnage(monde, chateau, chateau->typeProd);
             chateau->typeProd = nul;
             if (chateau->couleur == Bleu) {
-                printf("Le chateau à produit bleu %d un agent !\n", chateau->num);
+                printf("Le chateau bleu %d a produit un agent !\n", chateau->num);
             } else {
-                printf("Le chateau à produit rouge %d un agent !\n", chateau->num);
+                printf("Le chateau rouge %d a produit un agent !\n", chateau->num);
             }
             if (chateau->couleur == Bleu){
                 printf("Tresor bleu  : %d\nTresor rouge : %d\n", *tresor, *tresor2);
