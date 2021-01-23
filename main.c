@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define RED '\033[31m'
+#define BLUE '\033[34m'
+
 #include "monde.h"
 #include "creerPerso.h"
 #include "actionEtTour.h"
@@ -20,10 +23,10 @@ int main() {
     printf("\n");
     while(partie == 1){
         if(tourNum%2==debut){
-            printf("L'équipe bleue joue !\n\n");
+            printf("L'équipe \033[34mbleue\033[37m\033[49m joue !\n\n");
             tour(monde, Bleu, tresorBleu, tresorRouge);
         } else {
-            printf("L'équipe rouge joue !\n\n");
+            printf("L'équipe \033[31mrouge\033[37m\033[49m joue !\n\n");
             tour(monde, Rouge, tresorRouge, tresorBleu);
         }
         tourNum++;

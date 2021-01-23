@@ -2,6 +2,8 @@
 #include <stdlib.h>
 
 #include "monde.h"
+#define RED '\033[31m'
+#define BLUE '\033[34m'
 
 void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Personnage* chateau){
     Personnage* perso = malloc(sizeof(Personnage));
@@ -142,9 +144,9 @@ void afficheMonde(Monde* monde, int tresor, int tresor2, Couleur couleur, int t)
     int max = nbreMaxPerso(monde), nbre;
     if (t==1) {
         if (couleur == Bleu){
-            printf("Tresor bleu  : %d\nTresor rouge : %d\n", tresor, tresor2);
+            printf("\033[34m Tresor bleu  : %d\n \033[31mTresor rouge : %d\n\033[37m\033[49m", tresor, tresor2);
         } else {
-            printf("Tresor bleu  : %d\nTresor rouge : %d\n", tresor2, tresor);
+            printf("\033[34m Tresor bleu  : %d\n \033[31mTresor rouge : %d\n\033[37m\033[49m", tresor2, tresor);
         }
     }
     for (int i = 0; i<8; i++) {
@@ -154,9 +156,9 @@ void afficheMonde(Monde* monde, int tresor, int tresor2, Couleur couleur, int t)
             if (monde->plateau[i][j]->chateau != NULL) {
                 nbre++;
                 if (monde->plateau[i][j]->chateau->couleur == Bleu) {
-                    printf("(Cb%d)", monde->plateau[i][j]->chateau->num);
+                    printf("\033[34m(Cb%d)\033[37m\033[49m", monde->plateau[i][j]->chateau->num);
                 } else {
-                    printf("(Cr%d)", monde->plateau[i][j]->chateau->num);
+                    printf("\033[31m(Cr%d)\033[37m\033[49m", monde->plateau[i][j]->chateau->num);
                 }
             }
             if (monde->plateau[i][j]->perso != NULL) {
@@ -165,21 +167,21 @@ void afficheMonde(Monde* monde, int tresor, int tresor2, Couleur couleur, int t)
                     if (persoInter != NULL) {
                         if (persoInter->nom == Seigneur) {
                             if (persoInter->couleur == Bleu) {
-                                printf("(Sb%d)", persoInter->num);
+                                printf("\033[34m(Sb%d)\033[37m\033[49m", persoInter->num);
                             } else {
-                                printf("(Sr%d)", persoInter->num);
+                                printf("\033[31m(Sr%d)\033[37m\033[49m", persoInter->num);
                             }
                         } else if (persoInter->nom == Guerrier) {
                             if (persoInter->couleur == Bleu) {
-                                printf("(Gb%d)", persoInter->num);
+                                printf("\033[34m(Gb%d)\033[37m\033[49m", persoInter->num);
                             } else {
-                                printf("(Gr%d)", persoInter->num);
+                                printf("\033[31m(Gr%d)\033[37m\033[49m", persoInter->num);
                             }
                         } else {
                             if (persoInter->couleur == Bleu) {
-                                printf("(Mb%d)", persoInter->num);
+                                printf("\033[34m(Mb%d)\033[37m\033[49m", persoInter->num);
                             } else {
-                                printf("(Mr%d)", persoInter->num);
+                                printf("\033[31m(Mr%d)\033[37m\033[49m", persoInter->num);
                             }
                         }
                         persoInter = persoInter->vNext;
