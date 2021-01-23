@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define RED '\033[31m'
+#define BLUE '\033[34m'
+
 #include "monde.h"
 #include "creerPerso.h"
 #include "actionEtTour.h"
@@ -37,9 +40,9 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2)
                 printf("Le chateau rouge %d a produit un agent !\n", chateau->num);
             }
             if (chateau->couleur == Bleu){
-                printf("Tresor bleu  : %d\nTresor rouge : %d\n", *tresor, *tresor2);
+                printf("\033[34mTresor bleu  : %d\n\033[31mTresor rouge : %d\n033[37m\033[49m", *tresor, *tresor2);
             } else {
-                printf("Tresor bleu  : %d\nTresor rouge : %d\n", *tresor2, *tresor);
+                printf("\033[34mTresor bleu  : %d\n\033[31mTresor rouge : %d\n033[37m\033[49m", *tresor2, *tresor);
             }
             afficheMonde(monde, chateau->couleur, *tresor, *tresor2, 0);
         }
