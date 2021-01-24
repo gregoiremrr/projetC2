@@ -201,11 +201,6 @@ void actionManant(Monde* monde, Personnage* perso, int* tresor) {
                     }
                     *tresor += 1;
                 } else {
-                    if (perso->couleur == Bleu) {
-                        printf("Le manant bleu %d est en déplacement pendant ce tour...\n", perso->num);
-                    } else {
-                        printf("Le manant rouge %d est en déplacement pendant ce tour...\n", perso->num);
-                    }
                     gereDeplacement(monde, perso);
                 }
         }
