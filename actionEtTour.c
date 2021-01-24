@@ -40,9 +40,9 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2)
                 printf("Le chateau rouge %d a produit un agent !\n", chateau->num);
             }
             if (chateau->couleur == Bleu){
-                printf("\033[34mTresor bleu  : %d\n\033[31mTresor rouge : %d\n033[37m\033[49m", *tresor, *tresor2);
+                printf("\033[34mTresor bleu  : %d\n\033[31mTresor rouge : %d\n\033[37m\033[49m", *tresor, *tresor2);
             } else {
-                printf("\033[34mTresor bleu  : %d\n\033[31mTresor rouge : %d\n033[37m\033[49m", *tresor2, *tresor);
+                printf("\033[34mTresor bleu  : %d\n\033[31mTresor rouge : %d\n\033[37m\033[49m", *tresor2, *tresor);
             }
             afficheMonde(monde, chateau->couleur, *tresor, *tresor2, 0);
         }

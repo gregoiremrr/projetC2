@@ -8,21 +8,77 @@
 #include "monde.h"
 #include "creerPerso.h"
 #include "actionEtTour.h"
+#include "sauvegarde.h"
+#include "score.h"
 
 int partie = 1;
 
 int main() {
-    Monde* monde = initMonde();
-    int* tresorRouge = malloc(sizeof(int)),* tresorBleu = malloc(sizeof(int));
-    *tresorRouge = 50;
-    *tresorBleu = 50;
-    int tourNum = 0;
     srand(time(NULL));
-    int debut = rand()%2;
+    int s;
+    char sauvegarde;
+    char fin;
+    char nomFichier[256];
+    char charg;
+    char nomPartie[256];
+    int debut;
+    do {
+        printf("Voulez-vous charger une partie? (Y/N)\n");
+        scanf(" %c", &charg);
+    } while (charg != 'Y' && charg != 'N');
+    Monde* monde;
+    int tourNum = 0;
+    int* tresorRouge = malloc(sizeof(int)),* tresorBleu = malloc(sizeof(int));
+    if (charg == 'N') {
+        monde = initMonde();
+        *tresorRouge = 50;
+        *tresorBleu = 50;
+        debut = rand()%2;
+    } else {
+        FILE* fichier;
+        do {
+            printf("Donner le nom de la partie à charger.\n");
+            scanf("%s", nomPartie);
+            fichier = fopen(nomPartie, "r");
+            if (fichier == NULL) {
+                printf("Aucune partie de ce nom trouvée...\n");
+            }
+        } while (fichier == NULL);
+        monde = chargeFile(fichier, &debut, tresorBleu, tresorRouge);
+    }
     afficheMonde(monde, *tresorBleu, *tresorRouge, Bleu, 1);
     printf("\n");
     while(partie == 1){
-        if(tourNum%2==debut){
+        sauvegarde = 'a';
+        if (tourNum > 0) {
+            do {
+                printf("Voulez-vous sauvegarder ?\n");
+                scanf(" %c", &sauvegarde);
+            } while (sauvegarde != 'Y' && sauvegarde != 'N');
+        }
+        if (sauvegarde == 'Y') {
+            printf("Entrez le nom du fichier de sauvegarde :\n");
+            scanf("%s", nomFichier);
+            if (tourNum % 2 == debut) {
+                save(fopen(nomFichier, "w"), monde, Bleu, *tresorRouge, *tresorBleu);
+            } else {
+                save(fopen(nomFichier, "w"), monde, Rouge, *tresorRouge, *tresorBleu);
+            }
+        }
+        fin = 'a';
+        if (tourNum > 0) {
+            do{
+                printf("Voulez vous quitter la partie? (Y/N)\n");
+                scanf(" %c", &fin);
+            } while (fin != 'Y' && fin !='N');
+            if (fin == 'Y') {
+                printf("Fin de la partie.\n");
+                partie = 0;
+                s = score(monde, *tresorBleu, *tresorRouge, tourNum);
+                continue;
+            }
+        }
+        if(tourNum % 2 == debut){
             printf("L'équipe \033[34mbleue\033[37m\033[49m joue !\n\n");
             tour(monde, Bleu, tresorBleu, tresorRouge);
         } else {
