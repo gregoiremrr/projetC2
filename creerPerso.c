@@ -112,7 +112,7 @@ void deletePerso(Monde* monde, Personnage* perso){
                     initPerso(monde, Manant, x, y, Bleu, monde->chateauBleu);
                 }
             } else {
-                monde->plateau[persoInter->x][persoInter->y]->perso = NULL;
+                monde->plateau[persoInter->previous->x][persoInter->previous->y]->perso = NULL;
                 free(persoInter->previous);
             }
             persoInter->previous = NULL;
