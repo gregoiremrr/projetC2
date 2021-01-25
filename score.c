@@ -54,6 +54,38 @@ int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {
     return scoreF;
 }
 
-/*void ajouteScore(int score) {
-
-}*/
+void ajouteScore(int newScore) {
+    FILE* fichier = fopen("sauvegarde.txt", "r+");
+    if (fichier == NULL) {
+        fichier = fopen("sauvegarde.txt", "r");
+        fclose(ficher);
+        fichier = fopen("sauvegarde.txt", "r+");
+    }
+    if (fichier != NULL) {
+        rewind(fichier);
+        int score;
+        char nom[256];
+        int curs;
+        fscanf(fichier, "%d %s", score, nom);
+        while (score >= newScore && score != EOF) {
+            curs = ftell(fichier);
+            fscanf(fichier, "%d %s", score, nom);
+        }
+        if (score < newScore) {
+            fseek(fichier, curs, SEEK_SET);
+            char name[256];
+            printf("Entrez un nom pour votre score :\n");
+            scanf("%s", name);
+            fprintf("%d %s\n", newScore, name);
+            /*while (score != EOF) {
+                curs = ftell(fichier);
+                fscanf(fichier, "%d %s", score, nom);
+            }
+            fseek(fichier, curs, SEEK_SET);
+            fprintf("")*/
+        }
+        fclose(fichier);
+    } else {
+        printf("Erreur lors de l'ouverture du fichier...");
+    }
+}
