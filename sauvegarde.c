@@ -79,438 +79,248 @@ Monde* chargeFile(FILE* fichier, int* debut, int* tresorBleu, int* tresorRouge){
             monde->plateau[i][j]->chateau = NULL;
         }
     }
-    fseek(fichier, 5, SEEK_SET);
-    char c = fgetc(fichier);
-    if (c == 'B') {
-        *debut = 0;
-        fseek(fichier, 2, SEEK_CUR);
-        fscanf(fichier, "%d", tresorBleu);
-        fseek(fichier, 3, SEEK_CUR);
-        fscanf(fichier, "%d", tresorRouge);
-    } else {
-        *debut = 1;
-        fseek(fichier, 2, SEEK_CUR);
-        fscanf(fichier, "%d", tresorRouge);
-        fseek(fichier, 3, SEEK_CUR);
-        fscanf(fichier, "%d", tresorBleu);
-    }
+    fseek(fichier, 4, SEEK_SET);
+    int i =0;
+    char C;
+    int tres;
     c = fgetc(fichier);
-    while (c != EOF) {
-        if (c == 'B'){
-            fseek(fichier, 4, SEEK_CUR);
+    while (c != EOF && i < 2){
+        debutLigne = ftell(fichier);
+        printf("%d\n", debutLigne);
+        while (c != '\n') {
             c = fgetc(fichier);
+        }
+        finLigne = ftell(fichier);
+        printf("%d\n", finLigne)
+        fseek(fichier, debutLigne, SEEK_SET);
+        char* ligne = malloc(sizeof(char)*(finLigne-debutLigne));
+        ligne = fgets(ligne, finLigne-debutLigne, fichier);
+        sscanf(line, "%c %d", C, tres )
+        if (C == 'R') {
+            tresorRouge = tres;
+        } else {
+            tresorBleu = tres;
+        }
+        c = fgetc(fichier);
+        i++;
+    }
+    if (C == 'R')
+        debut = 0;
+    else 
+        debut =1;
+    while (c != EOF){
+        int x;
+        int y;
+        int xDest;
+        int yDest;
+        char type;
+        char typePro;
+        int tps;
+        debutLigne = ftell(fichier);
+        printf("%d\n", debutLigne);
+        while(c != '\n')
+            c = fgetc(fichier);
+        finLigne = ftell(fichier);
+        printf("%d\n", finLigne);
+        fseek(fichier, debutLigne, SEEK_SET);
+        char* ligne = malloc(sizeof(char)*(finLigne-debutLigne));
+        ligne = fgets(ligne, finLigne-debutLigne, fichier);
+        sscanf(ligne,"%c %c %d %d %c %d", C, type, x, y,typePro, tps);
+        //récupération du 1er chateau
+        while (C == 'B'){
             monde->chateauBleu = malloc(sizeof(Personnage));
             monde->chateauBleu->nom = Chateau;
-            monde->chateauBleu->x = atoi(&c);
-            fseek(fichier, 2, SEEK_CUR);
-            c = fgetc(fichier);
-            monde->chateauBleu->y = atoi(&c);
-            fseek(fichier, 2, SEEK_CUR);
-            c = fgetc(fichier);
-            if (c == 'm') {
-                monde->chateauBleu->typeProd = Manant;
-                fseek(fichier, 2, SEEK_CUR);
-                c = fgetc(fichier);
-                monde->chateauBleu->tpsProd = 2 - atoi(&c);
-                c = fgetc(fichier);
-            } else if (c == 's') {
+            monde->chateauBleu->x = x;
+            monde->chateauBleu->y = y;
+            monde->chateauBleu->xDest = x;
+            monde->chateauBleu->yDest = y;
+            monde->chateauBleu->couleur = Bleu;
+            if (typePro == 's'){
                 monde->chateauBleu->typeProd = Seigneur;
-                fseek(fichier, 2, SEEK_CUR);
-                c = fgetc(fichier);
-                monde->chateauBleu->tpsProd = 6 - atoi(&c);
-                c = fgetc(fichier);
-            } else if (c == 'g') {
+                monde->chateauBleu->tpsProd = 6-tps;
+            } else if(typePro == 'g'{
                 monde->chateauBleu->typeProd = Guerrier;
-                fseek(fichier, 2, SEEK_CUR);
-                c = fgetc(fichier);
-                monde->chateauBleu->tpsProd = 4 - atoi(&c);
-                c = fgetc(fichier);
+                monde->chateauBleu->tpsProd = 4-tps;
+            } else if (typePro == 'm'{
+                monde->chateauBleu->typeProd = Manant;
+                monde->chateauBleu->tpsProd = 1-tps;
             } else {
                 monde->chateauBleu->typeProd = nul;
                 monde->chateauBleu->tpsProd = 0;
             }
-            monde->chateauBleu->xDest = monde->chateauBleu->x;
-            monde->chateauBleu->yDest = monde->chateauBleu->x;
             monde->chateauBleu->previous = NULL;
             monde->chateauBleu->vNext = NULL;
             monde->chateauBleu->vPrevious = NULL;
             monde->chateauBleu->coupDeProd = 30;
-            monde->chateauBleu->couleur = Bleu;
             monde->chateauBleu->num = incrementAndGet(monde->chateauBleu);
-            monde->plateau[monde->chateauBleu->x][monde->chateauBleu->y]->chateau = monde->chateauBleu;
+            monde->plateau[x][y]->chateau = monde->chateauBleu;
+            //récupération du reste des personnages de la même couleur
+            Personnage * chateauMain = monde->chateauBleu;
             c = fgetc(fichier);
-        } else if (c == 'R') {
-            fseek(fichier, 4, SEEK_CUR);
+            debutLigne = ftell(fichier);
+            printf("%d\n", debutLigne);
+            while(c != '\n')
+                c = fgetc(fichier);
+            finLigne = ftell(fichier);
+            printf("%d\n", finLigne);
+            fseek(fichier, debutLigne, SEEK_SET);
+            char* ligne = malloc(sizeof(char)*(finLigne-debutLigne));
+            ligne = fgets(ligne, finLigne-debutLigne, fichier);
+            if (ligne[2] == 'c' ) {
+                sscanf(ligne,"%c %c %d %d %c %d", C, type, x, y,typePro, tps);
+                Personnage* nvChateau = malloc(sizeof(Personnage));
+                nvChateau->nom = Chateau;
+                nvChateau->couleur = Bleu;
+                nvChateau->x = x;
+                nvChateau->y = y;
+                nvChateau->xDest = x;
+                nvChateau->yDest = y;
+                nvChateau->coupDeProd = 30;
+                nvChateau->vNext = NULL;
+                Personnage* chateau = monde->chateauBleu;
+                while(chateau->vNext != NULL){
+                    chateau = chateau->vNext;
+                }
+                nvChateau->vPrevious = chateau;
+                chateau->vNext = nvChateau;
+                chateau->vNext = nvChateau;
+                if (typePro == 's'){
+                nvChateau->typeProd = Seigneur;
+                nvchateau->tpsProd = 6-tps;
+            } else if(typePro == 'g'{
+                nvChateau->typeProd = Guerrier;
+                nvchateau->tpsProd = 4-tps;
+            } else if (typePro == 'm'{
+                nvChateau->typeProd = Manant;
+                nvChateau->tpsProd = 1-tps;
+            } else {
+                nvChateau->typeProd = nul;
+                nvChateau->tpsProd = 0;
+            }
+                nvChateau->next = NULL;
+                nvChateau->previous = NULL;
+                nvChateau->num = incrementAndGet(nvChateau);
+                monde->plateau[x][y]->chateau = nvChateau;
+                chateauMain = nvChateau;
+            } else if(ligne[2] = 's') {
+                sscanf(ligne, "%c %c %d %d %d %d", C, type, x, y, xDest, yDest);
+                Personnage* nvPerso = malloc(sizeof(Personnage));
+                nvPerso->nom = Seigneur;
+                nvPerso->couleur = Bleu;
+                nvPerso->x = x;
+                nvPerso->y = y;
+                nvPerso->xDest = xDest;
+                nvPerso->yDest = yDest;
+                Personnage* prev = chateauMain;
+                while (prev->next){
+                    prev = prev->next;
+                }
+                nvPerso->previous = prev;
+                nvPerso->next =NULL;
+                nvPerso->previous->next = nvPerso;
+                if (monde->plateau[x][y]->perso != NULL) {
+                    Personnage *persoInter = monde->plateau[x][y]->perso;
+                    while(persoInter->next != NULL) {
+                         persoInter = persoInter->next;
+                    }
+                    nvPerso->vPrevious = persoInter;
+                    nvPerso->vNext = NULL;
+                    persoInter->vNext = nvPerso;
+                } else 
+                    monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
+                nvPerso->num = incrementAndGet(nvPerso);
+                nvPerso->coupDeProd = 20;
+            }else if (ligne[2] = 'g') {
+                sscanf(ligne, "%c %c %d %d %d %d", C, type, x, y, xDest, yDest);
+                Personnage* nvPerso = malloc(sizeof(Personnage));
+                nvPerso->nom = Guerrier;
+                nvPerso->couleur = Bleu;
+                nvPerso->x = x;
+                nvPerso->y = y;
+                nvPerso->xDest = xDest;
+                nvPerso->yDest = yDest;
+                Personnage* prev = chateauMain;
+                while (prev->next){
+                    prev = prev->next;
+                }
+                nvPerso->previous = prev;
+                nvPerso->next =NULL;
+                nvPerso->previous->next = nvPerso;
+                if (monde->plateau[x][y]->perso != NULL) {
+                    Personnage *persoInter = monde->plateau[x][y]->perso;
+                    while(persoInter->next != NULL) {
+                         persoInter = persoInter->next;
+                    }
+                    nvPerso->vPrevious = persoInter;
+                    nvPerso->vNext = NULL;
+                    persoInter->vNext = nvPerso;
+                } else 
+                    monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
+                nvPerso->num = incrementAndGet(nvPerso);
+                nvPerso->coupDeProd = 5;
+            } else if(ligne[2] = 'm'){
+                sscanf(ligne, "%c %c %d %d %d %d", C, type, x, y, xDest, yDest);
+                Personnage* nvPerso = malloc(sizeof(Personnage));
+                nvPerso->nom = Manant;
+                nvPerso->couleur = Bleu;
+                nvPerso->x = x;
+                nvPerso->y = y;
+                nvPerso->xDest = xDest;
+                nvPerso->yDest = yDest;
+                Personnage* prev = chateauMain;
+                while (prev->next){
+                    prev = prev->next;
+                }
+                nvPerso->previous = prev;
+                nvPerso->next =NULL;
+                nvPerso->previous->next = nvPerso;
+                if (monde->plateau[x][y]->perso != NULL) {
+                    Personnage *persoInter = monde->plateau[x][y]->perso;
+                    while(persoInter->next != NULL) {
+                        persoInter = persoInter->next;
+                    }
+                    nvPerso->vPrevious = persoInter;
+                    nvPerso->vNext = NULL;
+                    persoInter->vNext = nvPerso;
+                } else 
+                    monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
+                nvPerso->num = incrementAndGet(nvPerso);
+                nvPerso->coupDeProd = 20;
+            }
             c = fgetc(fichier);
+        } 
+        while (C == 'R'){
             monde->chateauRouge = malloc(sizeof(Personnage));
             monde->chateauRouge->nom = Chateau;
-            monde->chateauRouge->x = atoi(&c);
-            fseek(fichier, 2, SEEK_CUR);
-            c = fgetc(fichier);
-            monde->chateauRouge->y = atoi(&c);
-            fseek(fichier, 2, SEEK_CUR);
-            c = fgetc(fichier);
-            if (c == 'm') {
-                monde->chateauRouge->typeProd = Manant;
-                fseek(fichier, 2, SEEK_CUR);
-                c = fgetc(fichier);
-                monde->chateauRouge->tpsProd = 2 - atoi(&c);
-                c = fgetc(fichier);
-            } else if (c == 's') {
+            monde->chateauRouge->x = x;
+            monde->chateauRouge->y = y;
+            monde->chateauRouge->xDest = x;
+            monde->chateauRouge->yDest = y;
+            monde->chateauRouge->couleur = Rouge;
+            if (typePro == 's'){
                 monde->chateauRouge->typeProd = Seigneur;
-                fseek(fichier, 2, SEEK_CUR);
-                c = fgetc(fichier);
-                monde->chateauRouge->tpsProd = 6 - atoi(&c);
-                c = fgetc(fichier);
-            } else if (c == 'g') {
+                monde->chateauRouge->tpsProd = 6-tps;
+            } else if(typePro == 'g'{
                 monde->chateauRouge->typeProd = Guerrier;
-                fseek(fichier, 2, SEEK_CUR);
-                c = fgetc(fichier);
-                monde->chateauRouge->tpsProd = 4 - atoi(&c);
-                c = fgetc(fichier);
+                monde->chateauRouge->tpsProd = 4-tps;
+            } else if (typePro == 'm'{
+                monde->chateauRouge->typeProd = Manant;
+                monde->chateauRouge->tpsProd = 1-tps;
             } else {
                 monde->chateauRouge->typeProd = nul;
                 monde->chateauRouge->tpsProd = 0;
             }
-            monde->chateauRouge->xDest = monde->chateauRouge->x;
-            monde->chateauRouge->yDest = monde->chateauRouge->x;
             monde->chateauRouge->previous = NULL;
             monde->chateauRouge->vNext = NULL;
             monde->chateauRouge->vPrevious = NULL;
             monde->chateauRouge->coupDeProd = 30;
-            monde->chateauRouge->couleur = Rouge;
             monde->chateauRouge->num = incrementAndGet(monde->chateauRouge);
-            monde->plateau[monde->chateauRouge->x][monde->chateauRouge->y]->chateau = monde->chateauRouge;
-            c = fgetc(fichier);
+            monde->plateau[x][y]->chateau = monde->chateauRouge;
         }
-        if (c == 'B') {
-            fseek(fichier, 2, SEEK_CUR);
-            c = fgetc(fichier);
-            if (c =='c') { 
-                    Personnage *nvChateau = malloc(sizeof(Personnage));
-                    nvChateau->nom = Chateau;
-                    nvChateau->couleur = Bleu;
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvChateau->x = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvChateau->y = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    if (c == 'm') {
-                        nvChateau->typeProd = Manant;
-                        fseek(fichier, 2, SEEK_CUR);
-                        c = fgetc(fichier);
-                        nvChateau->tpsProd = 2 - atoi(&c);
-                        c = fgetc(fichier);
-                    } else if (c == 's') {
-                        nvChateau->typeProd = Seigneur;
-                        fseek(fichier, 2, SEEK_CUR);
-                        c = fgetc(fichier);
-                        nvChateau->tpsProd = 6 - atoi(&c);
-                        c = fgetc(fichier);
-                    } else if (c == 'g') {
-                        nvChateau->typeProd = Guerrier;
-                        fseek(fichier, 2, SEEK_CUR);
-                        c = fgetc(fichier);
-                        nvChateau->tpsProd = 4 - atoi(&c);
-                        c = fgetc(fichier);
-                    } else {
-                        nvChateau->typeProd = nul;
-                        nvChateau->tpsProd = 0;
-                    }
-                    nvChateau->xDest = nvChateau->x;
-                    nvChateau->yDest = nvChateau->x;
-                    nvChateau->previous = NULL;
-                    nvChateau->vNext = NULL;
-                    nvChateau->coupDeProd = 30;
-                    nvChateau->couleur = Bleu;
-                    Personnage* chateau = monde->chateauBleu;
-                    while(chateau->vNext != NULL){
-                        chateau = chateau->vNext;
-                    }
-                    nvChateau->vPrevious = chateau;
-                    chateau->vNext = nvChateau;
-                    nvChateau->num = incrementAndGet(nvChateau);
-                    monde->plateau[nvChateau->x][nvChateau->y]->chateau = nvChateau;
-                    
-                } else if(c == 's') {
-                    Personnage* nvPerso = malloc(sizeof(Personnage));
-                    nvPerso->nom = Seigneur;
-                    nvPerso->couleur = Bleu;
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->x = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->y = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->xDest = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->yDest = atoi(&c);
-                    nvPerso->couleur = Bleu;
-                    nvPerso->num = incrementAndGet(nvPerso);
-                    nvPerso->coupDeProd = 20;
-                    Personnage* prev = monde->chateauBleu;
-                    while (prev->next){
-                        prev = prev->next;
-                    }
-                    nvPerso->previous = prev;
-                    nvPerso->next =NULL;
-                    nvPerso->previous->next = nvPerso;
-                    if (monde->plateau[nvPerso->x][nvPerso->y]->perso != NULL) {
-                        Personnage *persoInter = monde->plateau[nvPerso->x][nvPerso->y]->perso;
-                        while(persoInter->next != NULL) {
-                            persoInter = persoInter->next;
-                        }
-                        nvPerso->vPrevious = persoInter;
-                        nvPerso->vNext = NULL;
-                        persoInter->vNext = nvPerso;
-                    } else 
-                        monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-                    
-                } else if (c == 'g') {
-                    Personnage* nvPerso = malloc(sizeof(Personnage));
-                    nvPerso->nom = Guerrier;
-                    nvPerso->couleur = Bleu;
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->x = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->y = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->xDest = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->yDest = atoi(&c);
-                    nvPerso->couleur = Bleu;
-                    nvPerso->num = incrementAndGet(nvPerso);
-                    nvPerso->coupDeProd = 5;
-                    Personnage* prev = monde->chateauBleu;
-                    while (prev->next){
-                        prev = prev->next;
-                    }
-                    nvPerso->previous = prev;
-                    nvPerso->next =NULL;
-                    nvPerso->previous->next = nvPerso;
-                    if (monde->plateau[nvPerso->x][nvPerso->y]->perso != NULL) {
-                        Personnage *persoInter = monde->plateau[nvPerso->x][nvPerso->y]->perso;
-                        while(persoInter->next != NULL) {
-                            persoInter = persoInter->next;
-                        }
-                        nvPerso->vPrevious = persoInter;
-                        nvPerso->vNext = NULL;
-                        persoInter->vNext = nvPerso;
-                    } else 
-                        monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-                    
-                } else if (c == 'm') {
-                    Personnage* nvPerso = malloc(sizeof(Personnage));
-                    nvPerso->nom = Manant;
-                    nvPerso->couleur = Bleu;
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->x = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->y = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->xDest = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->yDest = atoi(&c);
-                    nvPerso->couleur = Bleu;
-                    nvPerso->num = incrementAndGet(nvPerso);
-                    nvPerso->coupDeProd = 1;
-                    Personnage* prev = monde->chateauBleu;
-                    while (prev->next){
-                        prev = prev->next;
-                    }
-                    nvPerso->previous = prev;
-                    nvPerso->next =NULL;
-                    nvPerso->previous->next = nvPerso;
-                    if (monde->plateau[nvPerso->x][nvPerso->y]->perso != NULL) {
-                        Personnage *persoInter = monde->plateau[nvPerso->x][nvPerso->y]->perso;
-                        while(persoInter->next != NULL) {
-                            persoInter = persoInter->next;
-                        }
-                        nvPerso->vPrevious = persoInter;
-                        nvPerso->vNext = NULL;
-                        persoInter->vNext = nvPerso;
-                    } else 
-                        monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-                }
-            
-        } else if (c == 'R') {
-            fseek(fichier, 2, SEEK_CUR);
-            c = fgetc(fichier);
-            if (c == 'c') { 
-                    Personnage* nvChateau = malloc(sizeof(Personnage));
-                    nvChateau->nom = Chateau;
-                    nvChateau->couleur = Rouge;
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvChateau->x = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvChateau->y = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    if (c == 'm') {
-                        nvChateau->typeProd = Manant;
-                        fseek(fichier, 2, SEEK_CUR);
-                        c = fgetc(fichier);
-                        nvChateau->tpsProd = 2 - atoi(&c);
-                        c = fgetc(fichier);
-                    } else if (c == 's') {
-                        nvChateau->typeProd = Seigneur;
-                        fseek(fichier, 2, SEEK_CUR);
-                        c = fgetc(fichier);
-                        nvChateau->tpsProd = 6 - atoi(&c);
-                        c = fgetc(fichier);
-                    } else if (c == 'g') {
-                        nvChateau->typeProd = Guerrier;
-                        fseek(fichier, 2, SEEK_CUR);
-                        c = fgetc(fichier);
-                        nvChateau->tpsProd = 4 - atoi(&c);
-                        c = fgetc(fichier);
-                    } else {
-                        nvChateau->typeProd = nul;
-                        nvChateau->tpsProd = 0;
-                    }
-                    nvChateau->xDest = nvChateau->x;
-                    nvChateau->yDest = nvChateau->x;
-                    nvChateau->previous = NULL;
-                    nvChateau->coupDeProd = 30;
-                    nvChateau->couleur = Rouge;
-                    nvChateau->vNext = NULL;
-                    Personnage* chateau = monde->chateauRouge;
-                    while(chateau->vNext != NULL){
-                        chateau = chateau->vNext;
-                    }
-                    nvChateau->vPrevious = chateau;
-                    chateau->vNext = nvChateau;
-                    nvChateau->num = incrementAndGet(nvChateau);
-                    monde->plateau[nvChateau->x][nvChateau->y]->chateau = nvChateau;
-            } else if(c == 's') {
-                    Personnage* nvPerso = malloc(sizeof(Personnage));
-                    nvPerso->nom = Seigneur;
-                    nvPerso->couleur = Rouge;
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->x = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->y = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->xDest = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->yDest = atoi(&c);
-                    nvPerso->num = incrementAndGet(nvPerso);
-                    nvPerso->coupDeProd = 20;
-                    Personnage* prev = monde->chateauRouge;
-                    while (prev->next){
-                        prev = prev->next;
-                    }
-                    nvPerso->previous = prev;
-                    nvPerso->next =NULL;
-                    nvPerso->previous->next = nvPerso;
-                    if (monde->plateau[nvPerso->x][nvPerso->y]->perso != NULL) {
-                        Personnage *persoInter = monde->plateau[nvPerso->x][nvPerso->y]->perso;
-                        while(persoInter->next != NULL) {
-                            persoInter = persoInter->next;
-                        }
-                        nvPerso->vPrevious = persoInter;
-                        nvPerso->vNext = NULL;
-                        persoInter->vNext = nvPerso;
-                    } else 
-                        monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-            } else if (c == 'g') {
-                    Personnage* nvPerso = malloc(sizeof(Personnage));
-                    nvPerso->nom = Guerrier;
-                    nvPerso->couleur = Rouge;
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->x = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->y = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->xDest = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->yDest = atoi(&c);
-                    nvPerso->num = incrementAndGet(nvPerso);
-                    nvPerso->coupDeProd = 5;
-                    Personnage* prev = monde->chateauRouge;
-                    while (prev->next){
-                        prev = prev->next;
-                    }
-                    nvPerso->previous = prev;
-                    nvPerso->next =NULL;
-                    nvPerso->previous->next = nvPerso;
-                    if (monde->plateau[nvPerso->x][nvPerso->y]->perso != NULL) {
-                        Personnage *persoInter = monde->plateau[nvPerso->x][nvPerso->y]->perso;
-                        while(persoInter->next != NULL) {
-                            persoInter = persoInter->next;
-                        }
-                        nvPerso->vPrevious = persoInter;
-                        nvPerso->vNext = NULL;
-                        persoInter->vNext = nvPerso;
-                    } else 
-                        monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-            } else if (c == 'm') {
-                    Personnage* nvPerso = malloc(sizeof(Personnage));
-                    nvPerso->nom = Manant;
-                    nvPerso->couleur = Rouge;
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->x = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->y = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->xDest = atoi(&c);
-                    fseek(fichier, 2, SEEK_CUR);
-                    c = fgetc(fichier);
-                    nvPerso->yDest = atoi(&c);
-                    nvPerso->num = incrementAndGet(nvPerso);
-                    nvPerso->coupDeProd = 1;
-                    Personnage* prev = monde->chateauRouge;
-                    while (prev->next){
-                        prev = prev->next;
-                    }
-                    nvPerso->previous = prev;
-                    nvPerso->next =NULL;
-                    nvPerso->previous->next = nvPerso;
-                    if (monde->plateau[nvPerso->x][nvPerso->y]->perso != NULL) {
-                        Personnage *persoInter = monde->plateau[nvPerso->x][nvPerso->y]->perso;
-                        while(persoInter->next != NULL) {
-                            persoInter = persoInter->next;
-                        }
-                        nvPerso->vPrevious = persoInter;
-                        nvPerso->vNext = NULL;
-                        persoInter->vNext = nvPerso;
-                    } else 
-                        monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-            
-            }
-        
-            
-        }
-        c = fgetc(fichier);
     }
-    return monde;
+
+    
+
 }
     
 

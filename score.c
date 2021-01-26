@@ -55,37 +55,53 @@ int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {
 }
 
 void ajouteScore(int newScore) {
-    FILE* fichier = fopen("sauvegarde.txt", "r+");
-    if (fichier == NULL) {
-        fichier = fopen("sauvegarde.txt", "r");
-        fclose(ficher);
-        fichier = fopen("sauvegarde.txt", "r+");
-    }
-    if (fichier != NULL) {
-        rewind(fichier);
-        int score;
-        char nom[256];
-        int curs;
-        fscanf(fichier, "%d %s", score, nom);
-        while (score >= newScore && score != EOF) {
-            curs = ftell(fichier);
-            fscanf(fichier, "%d %s", score, nom);
+    FILE* fichierR = fopen("sauvegarde.txt", "r");
+    
+    if (fichierR != NULL){
+        char a, nom[256], texte[1000];
+		int i = 0, j = 0, score, change = 0, compteur = 0;
+		rewind(fichierR);
+		while (j<10 && change != EOF) {
+            change = fscanf(fichierR, "%d %s", &score, nom);
+			if (score < newScore) {
+				change = 1;
+				break;
+			}
+			j++;
         }
-        if (score < newScore) {
-            fseek(fichier, curs, SEEK_SET);
-            char name[256];
-            printf("Entrez un nom pour votre score :\n");
-            scanf("%s", name);
-            fprintf("%d %s\n", newScore, name);
-            /*while (score != EOF) {
-                curs = ftell(fichier);
-                fscanf(fichier, "%d %s", score, nom);
-            }
-            fseek(fichier, curs, SEEK_SET);
-            fprintf("")*/
+		rewind(fichierR);
+		a = fgetc(fichierR);
+		do {
+			texte[i++] = a;
+			a = fgetc(fichierR);
+		} while (a != EOF);
+		texte[i] = '\0';
+		fclose(fichierR);
+		
+		FILE* fichierW = fopen("sauvegarde.txt", "w+");
+        if (fichierW != NULL) {
+            i = 0;
+            int k = 0;
+            do {
+                if (compteur == j) {
+                    printf("Entrez votre nom :\n");
+                    scanf("%s", nom);
+                    fprintf(fichierW, "%d %s\n", newScore, nom);
+                    compteur++;
+                    k = 1;
+                } else {
+                    fputc(texte[i-k], fichierW);
+                    if (texte[i-k] == '\n') {
+                        compteur++;
+                    }
+                }
+            } while (texte[++i] != '\0' && compteur < 10);
+            
+            fclose(fichierW);
+        } else {
+            printf("Erreur lors de l'ouverture du fichier...\n");
         }
-        fclose(fichier);
     } else {
-        printf("Erreur lors de l'ouverture du fichier...");
+        printf("Erreur lors de l'ouverture du fichier...\n");
     }
 }
