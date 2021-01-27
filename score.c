@@ -55,53 +55,58 @@ int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {
 }
 
 void ajouteScore(int newScore) {
-    FILE* fichierR = fopen("sauvegarde.txt", "r");
+	FILE* fichierR = fopen("sauvegarde.txt", "r");
     
     if (fichierR != NULL){
-        char a, nom[256], texte[1000];
-		int i = 0, j = 0, score, change = 0, compteur = 0;
+        char a, nom[256];
 		rewind(fichierR);
-		while (j<10 && change != EOF) {
-            change = fscanf(fichierR, "%d %s", &score, nom);
-			if (score < newScore) {
-				change = 1;
-				break;
-			}
+		
+		Score** maillons = malloc(11*sizeof(Score*));
+		for (int i = 0; i<11; i++) {
+			maillons[i] = malloc(sizeof(Score));
+			maillons[i]->valeur = -1;
+			maillons[i]->nom[0] = 'o';
+			maillons[i]->nom[1] = '\0';
+		}
+		int j = 0;
+		while (j<10 && a != -1) {
+            fscanf(fichierR, "%d %s", &(maillons[j]->valeur), maillons[j]->nom);
+			fseek(fichierR, 2, SEEK_CUR);
+			a = fgetc(fichierR);
+			fseek(fichierR, -3, SEEK_CUR);
 			j++;
         }
-		rewind(fichierR);
-		a = fgetc(fichierR);
-		do {
-			texte[i++] = a;
-			a = fgetc(fichierR);
-		} while (a != EOF);
-		texte[i] = '\0';
 		fclose(fichierR);
-		
+		for (int i = 0; i<11; i++) {
+			printf("%d %s\n", maillons[i]->valeur, maillons[i]->nom);
+		}
 		FILE* fichierW = fopen("sauvegarde.txt", "w+");
-        if (fichierW != NULL) {
-            i = 0;
-            int k = 0;
-            do {
-                if (compteur == j) {
-                    printf("Entrez votre nom :\n");
-                    scanf("%s", nom);
-                    fprintf(fichierW, "%d %s\n", newScore, nom);
-                    compteur++;
-                    k = 1;
-                } else {
-                    fputc(texte[i-k], fichierW);
-                    if (texte[i-k] == '\n') {
-                        compteur++;
-                    }
-                }
-            } while (texte[++i] != '\0' && compteur < 10);
-            
-            fclose(fichierW);
-        } else {
-            printf("Erreur lors de l'ouverture du fichier...\n");
-        }
-    } else {
-        printf("Erreur lors de l'ouverture du fichier...\n");
+		if (fichierW != NULL) {
+			j = 0;
+			while (maillons[j]->valeur >= newScore && j < 10) {
+				fprintf(fichierW, "%d %s\n", maillons[j]->valeur, maillons[j]->nom);
+				j++;
+			}
+			if (j<10) {
+				printf("Entrez votre nom :\n");
+                scanf("%s", nom);
+				fprintf(fichierW, "%d %s\n", newScore, nom);
+				while (j<9 && maillons[j]->valeur > 0) {
+					fprintf(fichierW, "%d %s\n", maillons[j]->valeur, maillons[j]->nom);
+					j++;
+				}
+			}
+			fclose(fichierW);
+		} else {
+			printf("Erreur lors de l'ouverture du fichier...\n");
+		}
+	} else {
+		FILE* f = fopen("sauvegarde.txt", "w");
+		if (f != NULL) {
+			fclose(f);
+			ajouteScore(newScore);
+		} else {
+			printf("Erreur lors de la créaton du fichier de sauvegarde...\n");
+		}
     }
 }

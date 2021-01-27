@@ -196,14 +196,7 @@ void actionManant(Monde* monde, Personnage* perso, int* tresor) {
                     scanf("%d",&perso->xDest);
                     perso->xDest -= 1;
                 } while ((perso->xDest == perso->x && perso->yDest == perso->y) ||  (perso->xDest < 0 && perso->yDest > 0) || (perso->xDest > 0 && perso->yDest < 0) || perso->xDest > 7 || perso->yDest > 7);
-                if (perso->xDest < 0 && perso->yDest < 0) {
-                    if (perso->couleur == Bleu) {
-                        printf("Le manant bleu %d ajoute une pièce au tresor !\n", perso->num);
-                    } else {
-                        printf("Le manant rouge %d ajoute une pièce au tresor !\n", perso->num);
-                    }
-                    *tresor += 1;
-                } else {
+                if (perso->xDest >= 0 && perso->yDest >= 0) {
                     gereDeplacement(monde, perso);
                 }
         }

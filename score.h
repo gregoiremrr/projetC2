@@ -6,6 +6,11 @@
 
 #include "monde.h"
 
+typedef struct score {
+	int valeur;
+	char nom[256];
+} Score;
+
 int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum);
 
 #endif

@@ -9,13 +9,13 @@
 #include "creerPerso.h"
 #include "actionEtTour.h"
 #include "sauvegarde.h"
-//#include "score.h"
+#include "score.h"
 
 int partie = 1;
 
 int main() {
     srand(time(NULL));
-    //int s;
+    int s;
     char sauvegarde;
     char fin;
     char nomFichier[256];
@@ -74,7 +74,8 @@ int main() {
             if (fin == 'Y') {
                 printf("Fin de la partie.\n");
                 partie = 0;
-                //s = score(monde, *tresorBleu, *tresorRouge, tourNum);
+                s = score(monde, *tresorBleu, *tresorRouge, tourNum);
+                ajouteScore(s);
                 continue;
             }
         }
