@@ -44,7 +44,7 @@ int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd){
             return tab;
         }
     }
-    printf("Le plateau est remplis... Le personnage ne peut pas etre place !");
+    printf("Le plateau est rempli... Le personnage ne peut pas etre place !");
     return NULL;
 }
 

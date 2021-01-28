@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "string.h"
 
 #define RED '\033[31m'
 #define BLUE '\033[34m'
@@ -39,14 +40,18 @@ int main() {
         do {
             printf("Rentrez le nom de la partie a charger :\n");
             scanf("%s", nomPartie);
+            int strLEN = strlen(nomPartie);
+            nomPartie[strLEN] = '.';
+            nomPartie[strLEN+1] = 'g';
+            nomPartie[strLEN+2] = 'o';
+            nomPartie[strLEN+3] = 't';
+            nomPartie[strLEN+4] = '\0';
             fichier = fopen(nomPartie, "r");
             if (fichier == NULL) {
                 printf("Aucune partie de ce nom trouvee...\n");
             }
         } while (fichier == NULL);
-        printf("debut\n");
-        monde = chargeFile(fichier, &debut, tresorBleu, tresorRouge);
-        printf("fin\n");
+        monde = chargeFile(fichier, tresorBleu, tresorRouge, &debut);
     }
     afficheMonde(monde, *tresorBleu, *tresorRouge, Bleu, 1);
     printf("\n");
@@ -61,10 +66,16 @@ int main() {
         if (sauvegarde == 'Y') {
             printf("Entrez le nom du fichier de sauvegarde :\n");
             scanf("%s", nomFichier);
+            int strLen = strlen(nomFichier);
+            nomFichier[strLen] = '.';
+            nomFichier[strLen+1] = 'g';
+            nomFichier[strLen+2] = 'o';
+            nomFichier[strLen+3] = 't';
+            nomFichier[strLen+4] = '\0';
             if (tourNum % 2 == debut) {
-                save(fopen(nomFichier, "w"), monde, Bleu, *tresorRouge, *tresorBleu);
+                save(fopen(nomFichier, "w+"), monde, Bleu, *tresorRouge, *tresorBleu);
             } else {
-                save(fopen(nomFichier, "w"), monde, Rouge, *tresorRouge, *tresorBleu);
+                save(fopen(nomFichier, "w+"), monde, Rouge, *tresorRouge, *tresorBleu);
             }
         }
         fin = 'a';

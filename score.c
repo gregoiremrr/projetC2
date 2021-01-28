@@ -24,7 +24,6 @@ int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {
         }
         chateau = chateau->vNext;
     }
-    scoreB += tresorBleu;
     chateau = monde->chateauRouge;
     perso = chateau->next;
     while(chateau != NULL){
@@ -41,13 +40,12 @@ int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {
         }
         chateau = chateau->vNext;
     }
-    scoreR += tresorRouge;
     scoreF = scoreB - scoreR;
     if (scoreF < 0 ) {
-        scoreF = ((-scoreF)*20)/tourNum;
+        scoreF = ((-scoreF)*15)+tresorRouge;
         printf("Les rouges remportent la partie avec pour score : %d\n", scoreF);
     } else if (scoreF > 0) {
-        scoreF = (scoreF*20)/tourNum;
+        scoreF = (scoreF*15)+tresorBleu;
         printf("Les bleus remportent la partie avec pour score : %d\n", scoreF);
     } else {
         printf("Il y a égalité... Personne n'a gagné (score nul)");
@@ -78,9 +76,7 @@ void ajouteScore(int newScore) {
 			j++;
         }
 		fclose(fichierR);
-		for (int i = 0; i<11; i++) {
-			printf("%d %s\n", maillons[i]->valeur, maillons[i]->nom);
-		}
+
 		FILE* fichierW = fopen("sauvegarde.txt", "w+");
 		if (fichierW != NULL) {
 			j = 0;
