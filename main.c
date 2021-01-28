@@ -37,14 +37,16 @@ int main() {
     } else {
         FILE* fichier;
         do {
-            printf("Donner le nom de la partie à charger.\n");
+            printf("Rentrez le nom de la partie a charger :\n");
             scanf("%s", nomPartie);
             fichier = fopen(nomPartie, "r");
             if (fichier == NULL) {
-                printf("Aucune partie de ce nom trouvée...\n");
+                printf("Aucune partie de ce nom trouvee...\n");
             }
         } while (fichier == NULL);
+        printf("debut\n");
         monde = chargeFile(fichier, &debut, tresorBleu, tresorRouge);
+        printf("fin\n");
     }
     afficheMonde(monde, *tresorBleu, *tresorRouge, Bleu, 1);
     printf("\n");

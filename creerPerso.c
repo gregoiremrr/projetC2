@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "monde.h"
 #include "creerPerso.h"
+#include "monde.h"
 
 int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd){
     int k = 1;

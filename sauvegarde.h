@@ -9,4 +9,7 @@
 void save(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tresorBleu);
 
 Monde* chargeFile(FILE* fichier, int* debut, int *tresorBleu, int *tresorRouge);
+
+int charEstDans(char c, char* str);
+
 #endif

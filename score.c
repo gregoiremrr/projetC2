@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "score.h"
 #include "monde.h"
 
 int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {

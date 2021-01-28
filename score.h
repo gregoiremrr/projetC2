@@ -13,4 +13,6 @@ typedef struct score {
 
 int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum);
 
+void ajouteScore(int newScore);
+
 #endif

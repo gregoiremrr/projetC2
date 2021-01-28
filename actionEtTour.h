@@ -2,7 +2,7 @@
 #define ACTION
 
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
 
 #include "monde.h"
 

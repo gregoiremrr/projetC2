@@ -4,9 +4,9 @@
 #define RED '\033[31m'
 #define BLUE '\033[34m'
 
+#include "actionEtTour.h"
 #include "monde.h"
 #include "creerPerso.h"
-#include "actionEtTour.h"
 #include "deplacement.h"
 
 void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2) {
@@ -56,7 +56,7 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2)
                 printf("Entrez une action pour le chateau rouge %d :\n", chateau->num);
             }
             scanf(" %c", &act);
-            if ((act == 'S' && *tresor < 20) || (act == 'G' && *tresor < 5) || (act == 'M' && *tresor < 1)) {
+            if ((act == 'S' && *tresor < 20)||(act == 'G' && *tresor < 5)||(act == 'M' && *tresor < 1)){
                 printf("Tresor bleu insuffisant... (%d piece(s))\n", *tresor);
             }
         }
