@@ -68,260 +68,236 @@ void save(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tre
     }
 }
 
-Monde* chargeFile(FILE* fichier, int* debut, int* tresorBleu, int* tresorRouge){
+int lenFichier(FILE* fichier){
+    char a = 'a', ligne[100];
+    int len = 0;
+    while (a != EOF) {
+        fscanf(fichier, " %[^\n]s\n", ligne);
+        fseek(fichier, 2, SEEK_CUR);
+        printf("%s\n", ligne);
+        a = fgetc(fichier);
+        printf("'%c'\n", a);
+        fseek(fichier, -3, SEEK_CUR);
+        len++;
+    }
+    return len;
+}
+
+Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
+    int len = lenFichier(fichier);
+    char** lignes = malloc((len)*sizeof(char*));
+    for (int i = 0; i<len; i++) {
+        lignes = malloc(100*sizeof(char));
+    }
+    Personnage* mainBleu = NULL,* mainRouge = NULL;
+
+    Personnage** personnages = malloc(len*sizeof(Personnage*));
+    for (int i = 0; i<len-3; i++) {
+        personnages[i] = malloc(sizeof(Personnage));
+    }
+    
+    fscanf(fichier, " %[^\n]s\n", lignes[0]);
+    fscanf(fichier, " %[^\n]s\n", lignes[1]);
+    fscanf(fichier, " %[^\n]s\n", lignes[2]);
+    
+    int j = 3;
+    while (j<len) {
+        fscanf(fichier, " %[^\n]s\n", lignes[j]);
+        j++;
+    }
+    
+    for (i = 3; i<len; i++) {
+        j = i - 3;
+        if (charEstDans('R', lignes[i])) {
+            personnages[j]->couleur = Rouge;
+            if (charEstDans('c', lignes[i])) {
+                personnages[j]->nom = Chateau;
+                personnages[j]->previous = NULL;
+                personnages[j]->next = NULL;
+                personnages[j]->vPrevious = mainRouge;
+                personnages[j]->vNext = NULL;
+                mainRouge = personnages[j];
+                personnages[j]->vPrevious->vNext = personnages[j];
+                if (charEstDans('s', lignes[i])) {
+                    personnages[j]->typeProd = Seigneur;
+                    personnages[j]->tpsProd = 6 - atoi(&lignes[i][strlen(ligne[i])-1]);
+                } else if (charEstDans('g', lignes[i])) {
+                    personnages[j]->typeProd = Guerrier;
+                    personnages[j]->tpsProd = 4 - atoi(lignes[i]+strlen(ligne[i])-1);
+                } else if (charEstDans('', lignes[i])){
+                    personnages[j]->typeProd = Manant;
+                    personnages[j]->tpsProd = 2 - atoi(lignes[i]+strlen(ligne[i])-1);
+                } else {
+                    personnages[j]->typeProd = nul;
+                    personnages[j]->tpsProd = 0;
+                }
+                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->x = atoi(ligne[i]+4);
+                personnages[j]->xDest = personnages[j]->x;
+                personnages[j]->y = atoi(ligne[i]+6);
+                personnages[j]->yDest = personnages[j]->y;
+            } else if (charEstDans('s', lignes[i])) {
+                personnages[j]->nom = Seigneur;
+                personnages[j]->x = atoi(ligne[i]+4);
+                personnages[j]->y =  atoi(ligne[i]+6);
+                personnages[j]->xDest = atoi(ligne[i]+8);
+                personnages[j]->yDest = atoi(ligne[i]+10);
+                personnages[j]->num = incrementAndGet(personnages[j]);
+                Personnage* persoInter = mainRouge;
+                while (persoInter->next){
+                    persoInter = persoInter->next;
+                }
+                personnages[j]->previous = persoInter;
+                persoInter->next = personnages[i];
+                personnages[j]->next = NULL;
+            } else if (charEstDans('g', lignes[i])) {
+                personnages[j]->nom = Guerrier;
+                personnages[j]->x = atoi(ligne[i]+4);
+                personnages[j]->y =  atoi(ligne[i]+6);
+                personnages[j]->xDest = atoi(ligne[i]+8);
+                personnages[j]->yDest = atoi(ligne[i]+10);
+                personnages[j]->num = incrementAndGet(personnages[j]);
+                Personnage* persoInter = mainRouge;
+                while (persoInter->next){
+                    persoInter = persoInter->next;
+                }
+                personnages[j]->previous = persoInter;
+                persoInter->next = personnages[i];
+                personnages[j]->next = NULL;
+            } else {
+                personnages[j]->nom = Manant;
+                personnages[j]->x = atoi(ligne[i]+4);
+                personnages[j]->y =  atoi(ligne[i]+6);
+                personnages[j]->xDest = atoi(ligne[i]+8);
+                char* a = ligne[i]+8;
+                while (*a != 32) {
+                    a++;
+                }
+                a++;
+                personnages[j]->yDest = atoi(a);
+                personnages[j]->num = incrementAndGet(personnages[j]);
+                Personnage* persoInter = mainRouge;
+                while (persoInter->next){
+                    persoInter = persoInter->next;
+                }
+                personnages[j]->previous = persoInter;
+                persoInter->next = personnages[i];
+                personnages[j]->next = NULL;
+            }
+        } else {
+            personnages[j]->couleur = Bleu;
+            if (charEstDans('c', lignes[i])) {
+                personnages[j]->nom = Chateau;
+                personnages[j]->previous = NULL;
+                personnages[j]->next = NULL;
+                personnages[j]->vPrevious = mainBleu;
+                personnages[j]->vNext = NULL;
+                mainBleu = personnages[j];
+                personnages[j]->vPrevious->vNext = personnages[j];
+                if (charEstDans('s', lignes[i])) {
+                    personnages[j]->typeProd = Seigneur;
+                    personnages[j]->tpsProd = 6 - atoi(&lignes[i][strlen(ligne[i])-1]);
+                } else if (charEstDans('g', lignes[i])) {
+                    personnages[j]->typeProd = Guerrier;
+                    personnages[j]->tpsProd = 4 - atoi(lignes[i]+strlen(ligne[i])-1);
+                } else if (charEstDans('', lignes[i])){
+                    personnages[j]->typeProd = Manant;
+                    personnages[j]->tpsProd = 2 - atoi(lignes[i]+strlen(ligne[i])-1);
+                } else {
+                    personnages[j]->typeProd = nul;
+                    personnages[j]->tpsProd = 0;
+                }
+                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->x = atoi(ligne[i]+4);
+                personnages[j]->xDest = personnages[j]->x;
+                personnages[j]->y = atoi(ligne[i]+6);
+                personnages[j]->yDest = personnages[j]->y;
+            } else if (charEstDans('s', lignes[i])) {
+                personnages[j]->nom = Seigneur;
+                personnages[j]->x = atoi(ligne[i]+4);
+                personnages[j]->y =  atoi(ligne[i]+6);
+                personnages[j]->xDest = atoi(ligne[i]+8);
+                personnages[j]->yDest = atoi(ligne[i]+10);
+                personnages[j]->num = incrementAndGet(personnages[j]);
+                Personnage* persoInter = mainBleu;
+                while (persoInter->next){
+                    persoInter = persoInter->next;
+                }
+                personnages[j]->previous = persoInter;
+                persoInter->next = personnages[i];
+                personnages[j]->next = NULL;
+            } else if (charEstDans('g', lignes[i])) {
+                personnages[j]->nom = Guerrier;
+                personnages[j]->x = atoi(ligne[i]+4);
+                personnages[j]->y =  atoi(ligne[i]+6);
+                personnages[j]->xDest = atoi(ligne[i]+8);
+                personnages[j]->yDest = atoi(ligne[i]+10);
+                personnages[j]->num = incrementAndGet(personnages[j]);
+                Personnage* persoInter = mainBleu;
+                while (persoInter->next){
+                    persoInter = persoInter->next;
+                }
+                personnages[j]->previous = persoInter;
+                persoInter->next = personnages[i];
+                personnages[j]->next = NULL;
+            } else {
+                personnages[j]->nom = Manant;
+                personnages[j]->x = atoi(ligne[i]+4);
+                personnages[j]->y =  atoi(ligne[i]+6);
+                personnages[j]->xDest = atoi(ligne[i]+8);
+                char* a = ligne[i]+8;
+                while (*a != 32) {
+                    a++;
+                }
+                a++;
+                personnages[j]->yDest = atoi(a);
+                personnages[j]->num = incrementAndGet(personnages[j]);
+                Personnage* persoInter = mainBleu;
+                while (persoInter->next){
+                    persoInter = persoInter->next;
+                }
+                personnages[j]->previous = persoInter;
+                persoInter->next = personnages[i];
+                personnages[j]->next = NULL;
+            }
+        }
+    }
     Monde* monde = malloc(sizeof(Monde));
-    monde->plateau = malloc(8*sizeof(Case**));
-    for(int i = 0; i<8; i++){
-        monde->plateau[i] = malloc(8*sizeof(Case*));
-        for (int j = 0; j<8; j++){
+    monde->plateau = malloc(8 * sizeof(Case **));
+    for (int i = 0; i < 8; i++) {
+        monde->plateau[i] = malloc(8 * sizeof(Case*));
+        for (int j = 0; j < 8; j++) {
             monde->plateau[i][j] = malloc(sizeof(Case));
             monde->plateau[i][j]->perso = NULL;
             monde->plateau[i][j]->chateau = NULL;
         }
     }
-    fseek(fichier, 4, SEEK_SET);
-    int i =0;
-    char C;
-    int tres;
-    c = fgetc(fichier);
-    while (c != EOF && i < 2){
-        debutLigne = ftell(fichier);
-        printf("%d\n", debutLigne);
-        while (c != '\n') {
-            c = fgetc(fichier);
-        }
-        finLigne = ftell(fichier);
-        printf("%d\n", finLigne)
-        fseek(fichier, debutLigne, SEEK_SET);
-        char* ligne = malloc(sizeof(char)*(finLigne-debutLigne));
-        ligne = fgets(ligne, finLigne-debutLigne, fichier);
-        sscanf(line, "%c %d", C, tres )
-        if (C == 'R') {
-            tresorRouge = tres;
+    for(int k = 0; k < len - 3 ; k++) {
+        if (personnages[k]->nom == Chateau) {
+            monde->plateau[personnages[k]->x][personnages[k]->y]->chateau = personnages[k];
         } else {
-            tresorBleu = tres;
+            if (monde->plateau[personnages[k]->x][personnages[k]->y]->perso == NULL) {
+                monde->plateau[personnages[k]->x][personnages[k]->y]->perso = personnages[k];
+            } else {
+                Personnage* persoInterm = monde->plateau[personnages[k]->x][personnages[k]->y]->perso;
+                while (persoInterm->next != NULL) {
+                    persoInterm = persoInterm->next;
+                }
+                personnages[k]->vPrevious = persoInterm;
+                persoInterm->vNext = personnages[k];
+            }
         }
-        c = fgetc(fichier);
+    }
+    return monde;
+}
+
+int charEstDans(char c, char* str) {
+    int i = 0;
+    while (str[i] != '\0' && str[i] != c) {
         i++;
     }
-    if (C == 'R')
-        debut = 0;
-    else 
-        debut =1;
-    while (c != EOF){
-        int x;
-        int y;
-        int xDest;
-        int yDest;
-        char type;
-        char typePro;
-        int tps;
-        debutLigne = ftell(fichier);
-        printf("%d\n", debutLigne);
-        while(c != '\n')
-            c = fgetc(fichier);
-        finLigne = ftell(fichier);
-        printf("%d\n", finLigne);
-        fseek(fichier, debutLigne, SEEK_SET);
-        char* ligne = malloc(sizeof(char)*(finLigne-debutLigne));
-        ligne = fgets(ligne, finLigne-debutLigne, fichier);
-        sscanf(ligne,"%c %c %d %d %c %d", C, type, x, y,typePro, tps);
-        //récupération du 1er chateau
-        while (C == 'B'){
-            monde->chateauBleu = malloc(sizeof(Personnage));
-            monde->chateauBleu->nom = Chateau;
-            monde->chateauBleu->x = x;
-            monde->chateauBleu->y = y;
-            monde->chateauBleu->xDest = x;
-            monde->chateauBleu->yDest = y;
-            monde->chateauBleu->couleur = Bleu;
-            if (typePro == 's'){
-                monde->chateauBleu->typeProd = Seigneur;
-                monde->chateauBleu->tpsProd = 6-tps;
-            } else if(typePro == 'g'{
-                monde->chateauBleu->typeProd = Guerrier;
-                monde->chateauBleu->tpsProd = 4-tps;
-            } else if (typePro == 'm'{
-                monde->chateauBleu->typeProd = Manant;
-                monde->chateauBleu->tpsProd = 1-tps;
-            } else {
-                monde->chateauBleu->typeProd = nul;
-                monde->chateauBleu->tpsProd = 0;
-            }
-            monde->chateauBleu->previous = NULL;
-            monde->chateauBleu->vNext = NULL;
-            monde->chateauBleu->vPrevious = NULL;
-            monde->chateauBleu->coupDeProd = 30;
-            monde->chateauBleu->num = incrementAndGet(monde->chateauBleu);
-            monde->plateau[x][y]->chateau = monde->chateauBleu;
-            //récupération du reste des personnages de la même couleur
-            Personnage * chateauMain = monde->chateauBleu;
-            c = fgetc(fichier);
-            debutLigne = ftell(fichier);
-            printf("%d\n", debutLigne);
-            while(c != '\n')
-                c = fgetc(fichier);
-            finLigne = ftell(fichier);
-            printf("%d\n", finLigne);
-            fseek(fichier, debutLigne, SEEK_SET);
-            char* ligne = malloc(sizeof(char)*(finLigne-debutLigne));
-            ligne = fgets(ligne, finLigne-debutLigne, fichier);
-            if (ligne[2] == 'c' ) {
-                sscanf(ligne,"%c %c %d %d %c %d", C, type, x, y,typePro, tps);
-                Personnage* nvChateau = malloc(sizeof(Personnage));
-                nvChateau->nom = Chateau;
-                nvChateau->couleur = Bleu;
-                nvChateau->x = x;
-                nvChateau->y = y;
-                nvChateau->xDest = x;
-                nvChateau->yDest = y;
-                nvChateau->coupDeProd = 30;
-                nvChateau->vNext = NULL;
-                Personnage* chateau = monde->chateauBleu;
-                while(chateau->vNext != NULL){
-                    chateau = chateau->vNext;
-                }
-                nvChateau->vPrevious = chateau;
-                chateau->vNext = nvChateau;
-                chateau->vNext = nvChateau;
-                if (typePro == 's'){
-                nvChateau->typeProd = Seigneur;
-                nvchateau->tpsProd = 6-tps;
-            } else if(typePro == 'g'{
-                nvChateau->typeProd = Guerrier;
-                nvchateau->tpsProd = 4-tps;
-            } else if (typePro == 'm'{
-                nvChateau->typeProd = Manant;
-                nvChateau->tpsProd = 1-tps;
-            } else {
-                nvChateau->typeProd = nul;
-                nvChateau->tpsProd = 0;
-            }
-                nvChateau->next = NULL;
-                nvChateau->previous = NULL;
-                nvChateau->num = incrementAndGet(nvChateau);
-                monde->plateau[x][y]->chateau = nvChateau;
-                chateauMain = nvChateau;
-            } else if(ligne[2] = 's') {
-                sscanf(ligne, "%c %c %d %d %d %d", C, type, x, y, xDest, yDest);
-                Personnage* nvPerso = malloc(sizeof(Personnage));
-                nvPerso->nom = Seigneur;
-                nvPerso->couleur = Bleu;
-                nvPerso->x = x;
-                nvPerso->y = y;
-                nvPerso->xDest = xDest;
-                nvPerso->yDest = yDest;
-                Personnage* prev = chateauMain;
-                while (prev->next){
-                    prev = prev->next;
-                }
-                nvPerso->previous = prev;
-                nvPerso->next =NULL;
-                nvPerso->previous->next = nvPerso;
-                if (monde->plateau[x][y]->perso != NULL) {
-                    Personnage *persoInter = monde->plateau[x][y]->perso;
-                    while(persoInter->next != NULL) {
-                         persoInter = persoInter->next;
-                    }
-                    nvPerso->vPrevious = persoInter;
-                    nvPerso->vNext = NULL;
-                    persoInter->vNext = nvPerso;
-                } else 
-                    monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-                nvPerso->num = incrementAndGet(nvPerso);
-                nvPerso->coupDeProd = 20;
-            }else if (ligne[2] = 'g') {
-                sscanf(ligne, "%c %c %d %d %d %d", C, type, x, y, xDest, yDest);
-                Personnage* nvPerso = malloc(sizeof(Personnage));
-                nvPerso->nom = Guerrier;
-                nvPerso->couleur = Bleu;
-                nvPerso->x = x;
-                nvPerso->y = y;
-                nvPerso->xDest = xDest;
-                nvPerso->yDest = yDest;
-                Personnage* prev = chateauMain;
-                while (prev->next){
-                    prev = prev->next;
-                }
-                nvPerso->previous = prev;
-                nvPerso->next =NULL;
-                nvPerso->previous->next = nvPerso;
-                if (monde->plateau[x][y]->perso != NULL) {
-                    Personnage *persoInter = monde->plateau[x][y]->perso;
-                    while(persoInter->next != NULL) {
-                         persoInter = persoInter->next;
-                    }
-                    nvPerso->vPrevious = persoInter;
-                    nvPerso->vNext = NULL;
-                    persoInter->vNext = nvPerso;
-                } else 
-                    monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-                nvPerso->num = incrementAndGet(nvPerso);
-                nvPerso->coupDeProd = 5;
-            } else if(ligne[2] = 'm'){
-                sscanf(ligne, "%c %c %d %d %d %d", C, type, x, y, xDest, yDest);
-                Personnage* nvPerso = malloc(sizeof(Personnage));
-                nvPerso->nom = Manant;
-                nvPerso->couleur = Bleu;
-                nvPerso->x = x;
-                nvPerso->y = y;
-                nvPerso->xDest = xDest;
-                nvPerso->yDest = yDest;
-                Personnage* prev = chateauMain;
-                while (prev->next){
-                    prev = prev->next;
-                }
-                nvPerso->previous = prev;
-                nvPerso->next =NULL;
-                nvPerso->previous->next = nvPerso;
-                if (monde->plateau[x][y]->perso != NULL) {
-                    Personnage *persoInter = monde->plateau[x][y]->perso;
-                    while(persoInter->next != NULL) {
-                        persoInter = persoInter->next;
-                    }
-                    nvPerso->vPrevious = persoInter;
-                    nvPerso->vNext = NULL;
-                    persoInter->vNext = nvPerso;
-                } else 
-                    monde->plateau[nvPerso->x][nvPerso->y]->perso = nvPerso;
-                nvPerso->num = incrementAndGet(nvPerso);
-                nvPerso->coupDeProd = 20;
-            }
-            c = fgetc(fichier);
-        } 
-        while (C == 'R'){
-            monde->chateauRouge = malloc(sizeof(Personnage));
-            monde->chateauRouge->nom = Chateau;
-            monde->chateauRouge->x = x;
-            monde->chateauRouge->y = y;
-            monde->chateauRouge->xDest = x;
-            monde->chateauRouge->yDest = y;
-            monde->chateauRouge->couleur = Rouge;
-            if (typePro == 's'){
-                monde->chateauRouge->typeProd = Seigneur;
-                monde->chateauRouge->tpsProd = 6-tps;
-            } else if(typePro == 'g'{
-                monde->chateauRouge->typeProd = Guerrier;
-                monde->chateauRouge->tpsProd = 4-tps;
-            } else if (typePro == 'm'{
-                monde->chateauRouge->typeProd = Manant;
-                monde->chateauRouge->tpsProd = 1-tps;
-            } else {
-                monde->chateauRouge->typeProd = nul;
-                monde->chateauRouge->tpsProd = 0;
-            }
-            monde->chateauRouge->previous = NULL;
-            monde->chateauRouge->vNext = NULL;
-            monde->chateauRouge->vPrevious = NULL;
-            monde->chateauRouge->coupDeProd = 30;
-            monde->chateauRouge->num = incrementAndGet(monde->chateauRouge);
-            monde->plateau[x][y]->chateau = monde->chateauRouge;
-        }
+    if (str[i] == '\0') {
+        return 0;
     }
-
-    
-
+    return 1;
 }
-    
-
-
