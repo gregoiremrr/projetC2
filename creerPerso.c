@@ -117,7 +117,18 @@ void deletePerso(Monde* monde, Personnage* perso){
             }
             persoInter->previous = NULL;
         }
-        free(persoInter);
+        if (persoInter->nom == Manant) {
+            int x = persoInter->x, y = persoInter->y;
+            if (persoInter->couleur == Bleu) {
+                free(persoInter);
+                initPerso(monde, Manant, x, y, Rouge, monde->chateauRouge);
+            } else {
+                free(persoInter);
+                initPerso(monde, Manant, x, y, Bleu, monde->chateauBleu);
+            }
+        } else {
+            free(persoInter);
+        }
     } else {
         if (perso->vPrevious == NULL) {
             monde->plateau[perso->x][perso->y]->perso = perso->vNext;

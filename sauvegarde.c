@@ -89,7 +89,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
     char** lignes = malloc((len)*sizeof(char*));
     for (int i = 0; i<len; i++) {
         lignes[i] = malloc(100*sizeof(char));
-    };
+    }
     Personnage* mainBleu = NULL,* mainRouge = NULL;
     Personnage** personnages = malloc((len-3)*sizeof(Personnage*));
     for (int i = 0; i<len-3; i++) {
@@ -107,12 +107,10 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
         *tresorBleu = atoi(lignes[1]+2);
         *tresorRouge = atoi(lignes[2]+2);
     }
-    
 
     for (int j = 3; j < len; j++) {
         fscanf(fichier, " %[^\n]s\n", lignes[j]);
     }
-    
     for (int i = 3; i<len; i++) {
         int j = i - 3;
         if (charEstDans('R', lignes[i])) {
@@ -145,6 +143,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->yDest = personnages[j]->y;
                 personnages[j]->x = atoi(lignes[i]+6);
                 personnages[j]->xDest = personnages[j]->x;
+                personnages[j]->coupDeProd = 30;
             } else if (charEstDans('s', lignes[i])) {
                 personnages[j]->nom = Seigneur;
                 personnages[j]->y = atoi(lignes[i]+4);
@@ -159,6 +158,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->previous = persoInter;
                 persoInter->next = personnages[j];
                 personnages[j]->next = NULL;
+                personnages[j]->coupDeProd = 20;
             } else if (charEstDans('g', lignes[i])) {
                 personnages[j]->nom = Guerrier;
                 personnages[j]->y = atoi(lignes[i]+4);
@@ -173,6 +173,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->previous = persoInter;
                 persoInter->next = personnages[j];
                 personnages[j]->next = NULL;
+                personnages[j]->coupDeProd = 5;
             } else {
                 personnages[j]->nom = Manant;
                 personnages[j]->y = atoi(lignes[i]+4);
@@ -192,6 +193,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->previous = persoInter;
                 persoInter->next = personnages[j];
                 personnages[j]->next = NULL;
+                personnages[j]->coupDeProd = 1;
             }
         } else {
             personnages[j]->couleur = Bleu;
@@ -223,6 +225,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->yDest = personnages[j]->y;
                 personnages[j]->x = atoi(lignes[i]+6);
                 personnages[j]->xDest = personnages[j]->x;
+                personnages[j]->coupDeProd = 30;
             } else if (charEstDans('s', lignes[i])) {
                 personnages[j]->nom = Seigneur;
                 personnages[j]->y = atoi(lignes[i]+4);
@@ -237,6 +240,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->previous = persoInter;
                 persoInter->next = personnages[j];
                 personnages[j]->next = NULL;
+                personnages[j]->coupDeProd = 20;
             } else if (charEstDans('g', lignes[i])) {
                 personnages[j]->nom = Guerrier;
                 personnages[j]->y = atoi(lignes[i]+4);
@@ -251,6 +255,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->previous = persoInter;
                 persoInter->next = personnages[j];
                 personnages[j]->next = NULL;
+                personnages[j]->coupDeProd = 5;
             } else {
                 personnages[j]->nom = Manant;
                 personnages[j]->y = atoi(lignes[i]+4);
@@ -270,6 +275,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->previous = persoInter;
                 persoInter->next = personnages[j];
                 personnages[j]->next = NULL;
+                personnages[j]->coupDeProd = 1;
             }
         }
     }
@@ -284,9 +290,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
         }
     }
     for(int k = 0; k < len - 3 ; k++) {
-        
         if (personnages[k]->nom == Chateau) {
-            
             monde->plateau[personnages[k]->x][personnages[k]->y]->chateau = personnages[k];
         } else {
             if (monde->plateau[personnages[k]->x][personnages[k]->y]->perso == NULL) {

@@ -20,7 +20,13 @@ void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Person
     perso->previous = prev;
     perso->next = NULL;
     perso->previous->next = perso;
-    monde->plateau[x][y]->perso = perso;
+    if (monde->plateau[x][y]->perso == NULL) {
+        monde->plateau[x][y]->perso = perso;
+    } else {
+        monde->plateau[x][y]->perso->vPrevious = perso;
+        perso->vNext = monde->plateau[x][y]->perso;
+        perso->vPrevious = NULL;
+    }
     perso->num = incrementAndGet(perso);
     if (nom == Seigneur) {
         perso->coupDeProd = 20;
@@ -29,6 +35,8 @@ void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Person
     } else {
         perso->coupDeProd = 1;
     }
+    perso->vNext = NULL;
+    perso->vPrevious = NULL;
 }
 
 Monde* initMonde(void){
