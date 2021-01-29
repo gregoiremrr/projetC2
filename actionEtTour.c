@@ -51,9 +51,9 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2)
         char act = 'a';
         while ((act != 'S' || *tresor < 20) && (act != 'G' || *tresor < 5) && (act != 'M' || *tresor < 1) &&  act != 'R') {
             if (chateau->couleur == Bleu) {
-                printf("Entrez une action pour le chateau bleu %d :\n", chateau->num);
+                printf("Entrez une action pour le chateau bleu %d :(S/M/G/R)\n", chateau->num);
             } else {
-                printf("Entrez une action pour le chateau rouge %d :\n", chateau->num);
+                printf("Entrez une action pour le chateau rouge %d :(S/M/G/R)\n", chateau->num);
             }
             scanf(" %c", &act);
             if ((act == 'S' && *tresor < 20)||(act == 'G' && *tresor < 5)||(act == 'M' && *tresor < 1)){
@@ -84,9 +84,9 @@ void actionSeigneur(Monde* monde, Personnage* perso, int* tresor) {
         char act = 'a';
         while (act != 's' && act != 'D' && (act != 'I' || *tresor < 30)) {
             if (perso->couleur == Bleu) {
-                printf("Entrez une action pour le seigneur bleu %d :\n", perso->num);
+                printf("Entrez une action pour le seigneur bleu %d :(I/D/s)\n", perso->num);
             } else {
-                printf("Entrez une action pour le seigneur rouge %d :\n", perso->num);
+                printf("Entrez une action pour le seigneur rouge %d :(I/D/s)\n", perso->num);
             }
             scanf(" %c", &act);
             if (act == 'I' && *tresor < 30) {
@@ -135,9 +135,9 @@ void actionGuerrier(Monde* monde, Personnage* perso) {
         char act = 'a';
         while (act != 's' && act != 'D') {
             if (perso->couleur == Bleu) {
-                printf("Entrez une action pour le guerrier bleu %d :\n", perso->num);
+                printf("Entrez une action pour le guerrier bleu %d :(D/s)\n", perso->num);
             } else {
-                printf("Entrez une action pour le guerrier rouge %d :\n", perso->num);
+                printf("Entrez une action pour le guerrier rouge %d :(D/s)\n", perso->num);
             }
             scanf(" %c", &act);
         }
@@ -174,9 +174,9 @@ void actionManant(Monde* monde, Personnage* perso, int* tresor) {
         char act = 'a';
         while (act != 's' && act != 'D') {
             if (perso->couleur == Bleu) {
-                printf("Entrez une action pour le manant bleu %d :\n", perso->num);
+                printf("Entrez une action pour le manant bleu %d :(D/s)\n", perso->num);
             } else {
-                printf("Entrez une action pour le manant rouge %d :\n", perso->num);
+                printf("Entrez une action pour le manant rouge %d :(D/s)\n", perso->num);
             }
             scanf(" %c", &act);
         }

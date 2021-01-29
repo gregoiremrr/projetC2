@@ -4,6 +4,7 @@
 #include "creerPerso.h"
 #include "monde.h"
 
+//La fonction permet trouver la case libre la plus proche du chateau
 int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd){
     int k = 1;
     int i = chateau->x, j = chateau->y;
@@ -76,7 +77,7 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     nvPerso->previous->next = nvPerso;
     monde->plateau[cLibre[0]][cLibre[1]]->perso = nvPerso;
 }
-
+// La fonction permet de supprimer un personnage et de changer l'allégence d'un manant après un combat
 void deletePerso(Monde* monde, Personnage* perso){
     if (perso->nom == Chateau) {
         monde->plateau[perso->x][perso->y]->chateau = NULL;

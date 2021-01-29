@@ -91,7 +91,7 @@ Monde* initMonde(void){
 
     return monde;
 }
-
+// Initialisation de variables globales qui désignent le nombre de chaque chateau/agent de chaque couleur
 int r_chateau = 0, r_guerrier = 0, r_seigneur = 0, r_manant = 0;
 int b_chateau = 0, b_guerrier = 0, b_seigneur = 0, b_manant = 0;
 

@@ -7,6 +7,7 @@
 #include "creerPerso.h"
 
 void gereDeplacement(Monde* monde, Personnage* perso) {
+    //Chemin le plus court pour se déplacer vers une case
     int x = 0, y = 0;
     if (perso->x < perso->xDest) {
         x = 1;
@@ -18,6 +19,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
     } else if (perso->y > perso->yDest) {
         y = -1;
     }
+    //Si aucun personnage n'est présent sur la case
     if (monde->plateau[perso->x+x][perso->y+y]->perso == NULL && monde->plateau[perso->x+x][perso->y+y]->chateau == NULL) {
         monde->plateau[perso->x][perso->y]->perso = NULL;
         if (perso->vPrevious != NULL) {
@@ -29,6 +31,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
             monde->plateau[perso->x][perso->y]->perso = persoInter;
             perso->vPrevious = NULL;
         }
+        //Si le personnage était sur une case avec d'autres personnages
         if (perso->vNext != NULL) {
             perso->vNext->vPrevious = perso->vPrevious;
             if (monde->plateau[perso->x][perso->y]->perso == NULL) {
@@ -39,6 +42,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         perso->x += x;
         perso->y += y;
         monde->plateau[perso->x][perso->y]->perso = perso;
+        //Si le personnage se déplace vers une case qui contient un chateau de même couleur
     } else if (monde->plateau[perso->x+x][perso->y+y]->perso == NULL && monde->plateau[perso->x+x][perso->y+y]->chateau->couleur == perso->couleur) {
         monde->plateau[perso->x][perso->y]->perso = NULL;
         if (perso->vPrevious != NULL) {
@@ -60,6 +64,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         perso->x += x;
         perso->y += y;
         monde->plateau[perso->x][perso->y]->perso = perso;
+        //Si le personnage se déplace vers une case qui contient un agent de même couleur
     } else if (monde->plateau[perso->x+x][perso->y+y]->perso != NULL && monde->plateau[perso->x+x][perso->y+y]->perso->couleur == perso->couleur) {
         monde->plateau[perso->x][perso->y]->perso = NULL;
         if (perso->vPrevious != NULL) {
@@ -124,6 +129,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         }
         persoInter->vNext = perso;
         perso->vPrevious = persoInter;
+    //Si le personnage se déplace vers une case qui contient un agent ou chateau pas de la même couleur
     } else {
         int p = 1;
         nomPerso persoNom = perso->nom;
@@ -144,6 +150,8 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
                 } else {
                     persoInterm = monde->chateauRouge;
                 }
+                //Implémente le combat entre un manant qui a changé d'allégence et les agents sur une même case de
+                //l'ancienne équipe
                 while (persoInterm != NULL) {printf("ok2\n");
                     if (persoInterm->nom == Manant) {
                         k = 1;

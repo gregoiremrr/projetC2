@@ -69,7 +69,7 @@ void save(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tre
         printf("Erreur lors de la creation du fichier de sauvegarde...");
     }
 }
-
+//Renvoie la longueur du fichier
 int lenFichier(FILE* fichier){
     char a = 'a', ligne[100];
     int len = 0;
@@ -86,18 +86,22 @@ int lenFichier(FILE* fichier){
 Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
     int len = lenFichier(fichier);
     rewind(fichier);
+     //Un tableau qui va contenir une ligne du fichier par case
     char** lignes = malloc((len)*sizeof(char*));
     for (int i = 0; i<len; i++) {
         lignes[i] = malloc(100*sizeof(char));
     }
     Personnage* mainBleu = NULL,* mainRouge = NULL;
+    //Un tableau de pointeurs vers les personnages récupérés dans le fichier
     Personnage** personnages = malloc((len-3)*sizeof(Personnage*));
     for (int i = 0; i<len-3; i++) {
         personnages[i] = malloc(sizeof(Personnage));
     }
+    //Lecture des 3 premières ligne contenant la dimension et les trésors
     fscanf(fichier, " %[^\n]s\n", lignes[0]);
     fscanf(fichier, " %[^\n]s\n", lignes[1]);
     fscanf(fichier, " %[^\n]s\n", lignes[2]);
+    //Récupération de l'équipe en attente et des trésors
     if (lignes[1][0] == 'R') {
         *debut = 1;
         *tresorRouge = atoi(lignes[1]+2);
@@ -107,14 +111,16 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
         *tresorBleu = atoi(lignes[1]+2);
         *tresorRouge = atoi(lignes[2]+2);
     }
-
+    // Lecture des lignes contenant les personnages
     for (int j = 3; j < len; j++) {
         fscanf(fichier, " %[^\n]s\n", lignes[j]);
     }
     for (int i = 3; i<len; i++) {
         int j = i - 3;
+        // Si l'équipe est rouge
         if (charEstDans('R', lignes[i])) {
             personnages[j]->couleur = Rouge;
+            // Si le personnage est un Chateau
             if (charEstDans('c', lignes[i])) {
                 personnages[j]->nom = Chateau;
                 personnages[j]->previous = NULL;
@@ -144,6 +150,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->x = atoi(lignes[i]+6);
                 personnages[j]->xDest = personnages[j]->x;
                 personnages[j]->coupDeProd = 30;
+            // Si le personnage n'est pas un chateau
             } else if (charEstDans('s', lignes[i])) {
                 personnages[j]->nom = Seigneur;
                 personnages[j]->y = atoi(lignes[i]+4);
@@ -166,6 +173,8 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->yDest = atoi(lignes[i]+8);
                 personnages[j]->xDest = atoi(lignes[i]+10);
                 personnages[j]->num = incrementAndGet(personnages[j]);
+                //mainRouge représente le dernier chateau Rouge retrouvé 
+                //dans le fichier pour pouvoir le lier à ses agents
                 Personnage* persoInter = mainRouge;
                 while (persoInter->next){
                     persoInter = persoInter->next;
@@ -196,6 +205,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->coupDeProd = 1;
             }
         } else {
+            //Si la couleur est Bleu
             personnages[j]->couleur = Bleu;
             if (charEstDans('c', lignes[i])) {
                 personnages[j]->nom = Chateau;
@@ -289,6 +299,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
             monde->plateau[i][j]->chateau = NULL;
         }
     }
+    //Placer les personnages dans le monde
     for(int k = 0; k < len - 3 ; k++) {
         if (personnages[k]->nom == Chateau) {
             monde->plateau[personnages[k]->x][personnages[k]->y]->chateau = personnages[k];
@@ -305,6 +316,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
             }
         }
     }
+    //Initialitation de chateauBleu et chateauRouge de la structure monde
     Personnage* chateauInter = mainRouge;
     while (chateauInter->vPrevious) {
         chateauInter = chateauInter->vPrevious;
@@ -317,7 +329,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
     monde->chateauBleu = chateauInter;
     return monde;
 }
-
+// renvoie 1 si un caractère donné apparait dans une chaine
 int charEstDans(char c, char* str) {
     int i = 0;
     while (str[i] != '\0' && str[i] != c) {
