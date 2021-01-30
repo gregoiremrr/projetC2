@@ -122,9 +122,9 @@ void actionSeigneur(Monde* monde, Personnage* perso, int* tresor) {
         }
     } else {
         if (perso->couleur == Bleu) {
-            printf("Le seigneur bleu %d est en déplacement pendant ce tour...\n", perso->num);
+            printf("Le seigneur bleu %d est en deplacement pendant ce tour...\n", perso->num);
         } else {
-            printf("Le seigneur rouge %d est en déplacement pendant ce tour...\n", perso->num);
+            printf("Le seigneur rouge %d est en deplacement pendant ce tour...\n", perso->num);
         }
         gereDeplacement(monde, perso);
     }
@@ -161,9 +161,9 @@ void actionGuerrier(Monde* monde, Personnage* perso) {
         }
     } else {
         if (perso->couleur == Bleu) {
-            printf("Le guerrier bleu %d est en déplacement pendant ce tour...\n", perso->num);
+            printf("Le guerrier bleu %d est en deplacement pendant ce tour...\n", perso->num);
         } else {
-            printf("Le guerrier rouge %d est en déplacement pendant ce tour...\n", perso->num);
+            printf("Le guerrier rouge %d est en deplacement pendant ce tour...\n", perso->num);
         }
         gereDeplacement(monde, perso);
     }
@@ -202,9 +202,9 @@ void actionManant(Monde* monde, Personnage* perso, int* tresor) {
         }
     } else if (perso->xDest >= 0 && perso->yDest >= 0) {
         if (perso->couleur == Bleu) {
-            printf("Le manant bleu %d est en déplacement pendant ce tour...\n", perso->num);
+            printf("Le manant bleu %d est en deplacement pendant ce tour...\n", perso->num);
         } else {
-            printf("Le manant rouge %d est en déplacement pendant ce tour...\n", perso->num);
+            printf("Le manant rouge %d est en deplacement pendant ce tour...\n", perso->num);
         }
         gereDeplacement(monde, perso);
     } else {

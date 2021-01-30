@@ -26,6 +26,7 @@ void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Person
         monde->plateau[x][y]->perso->vPrevious = perso;
         perso->vNext = monde->plateau[x][y]->perso;
         perso->vPrevious = NULL;
+        monde->plateau[x][y]->perso = perso;
     }
     perso->num = incrementAndGet(perso);
     if (nom == Seigneur) {

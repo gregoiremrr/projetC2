@@ -77,57 +77,76 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     nvPerso->previous->next = nvPerso;
     monde->plateau[cLibre[0]][cLibre[1]]->perso = nvPerso;
 }
-// La fonction permet de supprimer un personnage et de changer l'allégence d'un manant après un combat
-void deletePerso(Monde* monde, Personnage* perso){
-    if (perso->nom == Chateau) {
+
+void deletePerso(Monde* monde, Personnage* perso){printf("voila1\n");
+    if (perso->nom == Chateau) {printf("voila2\n");
         monde->plateau[perso->x][perso->y]->chateau = NULL;
         Personnage* persoInter = perso;
-        if (perso->couleur == Bleu) {
-            if (perso == monde->chateauBleu) {
+        if (perso->couleur == Bleu) {printf("voila3\n");
+            if (perso == monde->chateauBleu) {printf("voila4\n");
                 if (perso->vNext != NULL) {
                     monde->chateauBleu = perso->vNext;
-                } else {
+                } else {printf("voila5\n");
                     printf("L'equipe rouge a gagne !\n");
                     partie = 0;
                 }
             }
-        } else {
-            if (perso == monde->chateauRouge) {
+        } else {printf("voila6\n");
+            if (perso == monde->chateauRouge) {printf("voila7\n");
                 if (perso->vNext != NULL) {
                     monde->chateauRouge = perso->vNext;
-                } else {
+                } else {printf("voila8\n");
                     printf("L'equipe bleue a gagne !\n");
                     partie = 0;
                 }
             }
         }
-        while (persoInter->next != NULL) {
+        while (persoInter->next != NULL) {printf("voila9\n");
             persoInter = persoInter->next;
-            if (persoInter->previous->nom == Manant) {
+            if (persoInter->previous->vPrevious == NULL) {printf("voila10\n");
+                monde->plateau[persoInter->previous->x][persoInter->previous->y]->perso = persoInter->previous->vNext;
+            } else {printf("voila\n");
+                persoInter->previous->vPrevious->vNext = persoInter->previous->vNext;
+            }
+            if (persoInter->previous->vNext != NULL) {printf("voila11\n");
+                persoInter->previous->vNext->vPrevious = persoInter->previous->vPrevious;printf("voila11a\n");
+            }printf("voila11b\n");
+            if (persoInter->previous->previous != NULL) {
+                persoInter->previous->previous->next = persoInter->previous->next;printf("voila11c\n");
+            }printf("voila12\n");
+            if (persoInter->previous->nom == Manant) {printf("oke1");
                 int x = persoInter->previous->x, y = persoInter->previous->y;
-                if (persoInter->previous->couleur == Bleu) {
-                    free(persoInter->previous);
+                free(persoInter->previous);
+                if (persoInter->previous->couleur == Bleu) {printf("oke2");
                     initPerso(monde, Manant, x, y, Rouge, monde->chateauRouge);
-                } else {
-                    free(persoInter->previous);
+                } else {printf("oke3");
                     initPerso(monde, Manant, x, y, Bleu, monde->chateauBleu);
                 }
-            } else {
-                monde->plateau[persoInter->previous->x][persoInter->previous->y]->perso = NULL;
+            } else {printf("oke4");
                 free(persoInter->previous);
-            }
-            persoInter->previous = NULL;
-        }
+            }printf("oke5");
+            persoInter->previous = NULL;printf("oke6");
+        }printf("hehe1\n");
+        if (persoInter->vPrevious == NULL) {printf("hehe2\n");
+            monde->plateau[persoInter->x][persoInter->y]->perso = persoInter->vNext;
+        } else {printf("hehe3\n");
+            persoInter->vPrevious->vNext = persoInter->vNext;
+        }printf("hehe4\n");
+        if (persoInter->vNext != NULL) {printf("hehe5\n");
+            persoInter->vNext->vPrevious = persoInter->vPrevious;
+        }printf("hehe6\n");
+        if (persoInter->next != NULL) {printf("hehe7\n");
+            persoInter->next->previous = persoInter->previous;
+        }printf("hehe8\n");
         if (persoInter->nom == Manant) {
-            int x = persoInter->x, y = persoInter->y;
+            int x = persoInter->x, y = persoInter->y;printf("ok1");
+            free(persoInter);printf("ok2");
             if (persoInter->couleur == Bleu) {
-                free(persoInter);
                 initPerso(monde, Manant, x, y, Rouge, monde->chateauRouge);
-            } else {
-                free(persoInter);
+            } else {printf("ok3");
                 initPerso(monde, Manant, x, y, Bleu, monde->chateauBleu);
             }
-        } else {
+        } else {printf("ok4");
             free(persoInter);
         }
     } else {

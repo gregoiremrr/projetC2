@@ -93,10 +93,10 @@ int main() {
             }
         }
         if(tourNum % 2 == debut){
-            printf("L'équipe \033[34mbleue\033[37m\033[49m joue !\n\n");
+            printf("L'equipe \033[34mbleue\033[37m\033[49m joue !\n\n");
             tour(monde, Bleu, tresorBleu, tresorRouge);
         } else {
-            printf("L'équipe \033[31mrouge\033[37m\033[49m joue !\n\n");
+            printf("L'equipe \033[31mrouge\033[37m\033[49m joue !\n\n");
             tour(monde, Rouge, tresorRouge, tresorBleu);
         }
         tourNum++;
