@@ -140,58 +140,6 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         }
         if (monde->plateau[perso->x+x][perso->y+y]->chateau != NULL && p==1) {
             p = engageCombatPerso(monde, perso, monde->plateau[perso->x+x][perso->y+y]->chateau);
-            //debut
-            printf("ok1\n");
-            if (p==1) {
-                int k;
-                Personnage* persoInterm;
-                if (perso->couleur == Bleu) {
-                    persoInterm = monde->chateauBleu;
-                } else {
-                    persoInterm = monde->chateauRouge;
-                }
-                //Implémente le combat entre un manant qui a changé d'allégence et les agents sur une même case de
-                //l'ancienne équipe
-                while (persoInterm != NULL) {printf("ok2\n");
-                    if (persoInterm->nom == Manant) {
-                        k = 1;
-                        Personnage* vInter = monde->plateau[persoInterm->x][persoInterm->y]->perso;
-                        while (vInter != NULL) {printf("ok3\n");
-                            if (vInter->couleur != persoCouleur) {printf("ok4\n");
-                                k = engageCombatPerso(monde, persoInterm, vInter);
-                                if (k==1) {printf("ok5\n");
-                                    if (persoInterm->nom == Seigneur) {
-                                        if (persoInterm->couleur == Bleu) {
-                                            printf("Le seigneur bleu %d est sorti vainqueur du combat !\n", persoNum);
-                                        } else {printf("ok6\n");
-                                            printf("Le seigneur rouge %d est sorti vainqueur du combat !\n", persoNum);
-                                        }
-                                    } else if (persoInterm->nom == Guerrier) {printf("ok8\n");
-                                        if (persoInterm->couleur == Bleu) {
-                                            printf("Le guerrier bleu %d est sorti vainqueur du combat !\n", persoNum);
-                                        } else {
-                                            printf("Le guerrier rouge %d est sorti vainqueur du combat !\n", persoNum);
-                                        }
-                                    } else {printf("ok9\n");
-                                        if (persoInterm->couleur == Bleu) {
-                                            printf("Le manant bleu %d est sorti vainqueur du combat !\n", persoNum);
-                                        } else {printf("ok10\n");
-                                            printf("Le manant rouge %d est sorti vainqueur du combat !\n", persoNum);
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                            vInter = vInter->vNext;printf("ok11\n");
-                        }
-                        if (monde->plateau[persoInterm->x][persoInterm->y]->chateau != NULL && k == 1) {
-                            k = engageCombatPerso(monde, persoInterm, monde->plateau[persoInterm->x][persoInterm->y]->chateau);
-                        }
-                    }
-                    persoInterm = persoInterm->next;
-                }
-            }
-            //fin
         }
         if (p == 1) {
             if (persoNom == Seigneur) {
@@ -321,4 +269,53 @@ int engageCombatPerso(Monde* monde, Personnage* persoAttaque, Personnage* persoD
         }
     }
     return p;
+}
+
+//Vérifie l'homogéinité des couleurs sur le plateau
+void verifCombat(Monde* monde, Personnage* manant){
+    int k;
+    Personnage* persoInterm;
+    if (manant->couleur == Bleu) {
+        persoInterm = monde->chateauBleu;
+    } else {
+        persoInterm = monde->chateauRouge;
+    }
+    while (persoInterm != NULL) {printf("ok2\n");
+        if (persoInterm->nom == Manant) {
+            k = 1;
+            Personnage* vInter = monde->plateau[persoInterm->x][persoInterm->y]->perso;
+            while (vInter != NULL) {printf("ok3\n");
+                if (vInter->couleur != manant->couleur) {printf("ok4\n");
+                    k = engageCombatPerso(monde, persoInterm, vInter);
+                    if (k==1) {printf("ok5\n");
+                        if (persoInterm->nom == Seigneur) {
+                            if (persoInterm->couleur == Bleu) {
+                                printf("Le seigneur bleu %d est sorti vainqueur du combat !\n", manant->num);
+                            } else {printf("ok6\n");
+                                printf("Le seigneur rouge %d est sorti vainqueur du combat !\n", manant->num);
+                            }
+                        } else if (persoInterm->nom == Guerrier) {printf("ok8\n");
+                            if (persoInterm->couleur == Bleu) {
+                                printf("Le guerrier bleu %d est sorti vainqueur du combat !\n", manant->num);
+                            } else {
+                                printf("Le guerrier rouge %d est sorti vainqueur du combat !\n", manant->num);
+                            }
+                        } else {printf("ok9\n");
+                            if (persoInterm->couleur == Bleu) {
+                                printf("Le manant bleu %d est sorti vainqueur du combat !\n", manant->num);
+                            } else {printf("ok10\n");
+                                printf("Le manant rouge %d est sorti vainqueur du combat !\n", manant->num);
+                            }
+                        }
+                    }
+                    break;
+                }
+                vInter = vInter->vNext;printf("ok11\n");
+            }
+            if (monde->plateau[persoInterm->x][persoInterm->y]->chateau != NULL && k == 1) {
+                k = engageCombatPerso(monde, persoInterm, monde->plateau[persoInterm->x][persoInterm->y]->chateau);
+            }
+        }
+        persoInterm = persoInterm->next;
+    }
 }
