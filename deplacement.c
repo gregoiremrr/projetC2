@@ -19,7 +19,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
     } else if (perso->y > perso->yDest) {
         y = -1;
     }
-    //Si aucun personnage n'est présent sur la case
+    //Si aucun personnage n'est présent sur la case d'arrive
     if (monde->plateau[perso->x+x][perso->y+y]->perso == NULL && monde->plateau[perso->x+x][perso->y+y]->chateau == NULL) {
         monde->plateau[perso->x][perso->y]->perso = NULL;
         if (perso->vPrevious != NULL) {
@@ -31,7 +31,6 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
             monde->plateau[perso->x][perso->y]->perso = persoInter;
             perso->vPrevious = NULL;
         }
-        //Si le personnage était sur une case avec d'autres personnages
         if (perso->vNext != NULL) {
             perso->vNext->vPrevious = perso->vPrevious;
             if (monde->plateau[perso->x][perso->y]->perso == NULL) {
@@ -42,7 +41,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         perso->x += x;
         perso->y += y;
         monde->plateau[perso->x][perso->y]->perso = perso;
-        //Si le personnage se déplace vers une case qui contient un chateau de même couleur
+    //Si le personnage se déplace vers une case qui contient un chateau de même couleur
     } else if (monde->plateau[perso->x+x][perso->y+y]->perso == NULL && monde->plateau[perso->x+x][perso->y+y]->chateau->couleur == perso->couleur) {
         monde->plateau[perso->x][perso->y]->perso = NULL;
         if (perso->vPrevious != NULL) {
@@ -64,7 +63,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         perso->x += x;
         perso->y += y;
         monde->plateau[perso->x][perso->y]->perso = perso;
-        //Si le personnage se déplace vers une case qui contient un agent de même couleur
+    //Si le personnage se déplace vers une case qui contient un agent de même couleur
     } else if (monde->plateau[perso->x+x][perso->y+y]->perso != NULL && monde->plateau[perso->x+x][perso->y+y]->perso->couleur == perso->couleur) {
         monde->plateau[perso->x][perso->y]->perso = NULL;
         if (perso->vPrevious != NULL) {
@@ -97,6 +96,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         }
         persoInter->vNext = perso;
         perso->vPrevious = persoInter;
+    //Si le personnage se déplace vers une case qui contient un chateau et un agent de même couleur
     } else if (monde->plateau[perso->x+x][perso->y+y]->perso != NULL && monde->plateau[perso->x+x][perso->y+y]->chateau != NULL && monde->plateau[perso->x+x][perso->y+y]->perso->couleur == perso->couleur) {
         monde->plateau[perso->x][perso->y]->perso = NULL;
         if (perso->vPrevious != NULL) {
@@ -129,7 +129,7 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         }
         persoInter->vNext = perso;
         perso->vPrevious = persoInter;
-    //Si le personnage se déplace vers une case qui contient un agent ou chateau pas de la même couleur
+    //Si le personnage se déplace vers une case qui contient un agent ou chateau de la couleur adverse
     } else {
         int p = 1;
         nomPerso persoNom = perso->nom;
@@ -218,52 +218,16 @@ int engageCombatPerso(Monde* monde, Personnage* persoAttaque, Personnage* persoD
     } else {
         Personnage* persoInter = persoDefend;
         while (persoInter != NULL && p == 1) {
-            if (persoInter->couleur != persoAttaque->couleur) {
-                if (persoInter->nom == Guerrier) {
-                    if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
-                        if (persoInter->vNext != NULL) {
-                            persoInter = persoInter->vNext;
-                            deletePerso(monde, persoInter->vPrevious);
-                        } else {
-                            deletePerso(monde, persoInter);
-                        }
-                    } else {
-                        deletePerso(monde, persoAttaque);
-                        p = 0;
-                    }
-                } else if (persoInter->nom == Seigneur) {
-                    if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
-                        if (persoInter->vNext != NULL) {
-                            persoInter = persoInter->vNext;
-                            deletePerso(monde, persoInter->vPrevious);
-                        } else {
-                            deletePerso(monde, persoInter);
-                        }
-                    } else {
-                        deletePerso(monde, persoAttaque);
-                        p = 0;
-                    }
+            if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
+                if (persoInter->vNext != NULL) {
+                    persoInter = persoInter->vNext;
+                    deletePerso(monde, persoInter->vPrevious);
                 } else {
-                    if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
-                        if (persoInter->vNext != NULL) {
-                            persoInter = persoInter->vNext;
-                            deletePerso(monde, persoInter->vPrevious);
-                        } else {
-                            deletePerso(monde, persoInter);
-                        }
-                    } else {
-                        deletePerso(monde, persoAttaque);
-                        p = 0;
-                    }
+                    deletePerso(monde, persoInter);
                 }
             } else {
-                Personnage* persoInterm = persoAttaque;
-                while (persoInterm->vNext != NULL) {
-                    persoInterm = persoInterm->vNext;
-                }
-                persoInterm->vNext = persoInter;
-                persoInter->vPrevious = persoInterm;
-                persoInter->vNext = NULL;
+                deletePerso(monde, persoAttaque);
+                p = 0;
             }
             persoInter = persoInter->vNext;
         }
@@ -273,49 +237,81 @@ int engageCombatPerso(Monde* monde, Personnage* persoAttaque, Personnage* persoD
 
 //Vérifie l'homogéinité des couleurs sur le plateau
 void verifCombat(Monde* monde, Personnage* manant){
-    int k;
-    Personnage* persoInterm;
-    if (manant->couleur == Bleu) {
-        persoInterm = monde->chateauBleu;
-    } else {
-        persoInterm = monde->chateauRouge;
+    int x = manant->x, y = manant->y;
+    int len = 0;
+    Personnage* persoInter = monde->plateau[x][y]->perso;
+    while (persoInter != NULL) {
+        persoInter = persoInter->vNext;
+        len++;
     }
-    while (persoInterm != NULL) {printf("ok2\n");
-        if (persoInterm->nom == Manant) {
-            k = 1;
-            Personnage* vInter = monde->plateau[persoInterm->x][persoInterm->y]->perso;
-            while (vInter != NULL) {printf("ok3\n");
-                if (vInter->couleur != manant->couleur) {printf("ok4\n");
-                    k = engageCombatPerso(monde, persoInterm, vInter);
-                    if (k==1) {printf("ok5\n");
-                        if (persoInterm->nom == Seigneur) {
-                            if (persoInterm->couleur == Bleu) {
-                                printf("Le seigneur bleu %d est sorti vainqueur du combat !\n", manant->num);
-                            } else {printf("ok6\n");
-                                printf("Le seigneur rouge %d est sorti vainqueur du combat !\n", manant->num);
-                            }
-                        } else if (persoInterm->nom == Guerrier) {printf("ok8\n");
-                            if (persoInterm->couleur == Bleu) {
-                                printf("Le guerrier bleu %d est sorti vainqueur du combat !\n", manant->num);
-                            } else {
-                                printf("Le guerrier rouge %d est sorti vainqueur du combat !\n", manant->num);
-                            }
-                        } else {printf("ok9\n");
-                            if (persoInterm->couleur == Bleu) {
-                                printf("Le manant bleu %d est sorti vainqueur du combat !\n", manant->num);
-                            } else {printf("ok10\n");
-                                printf("Le manant rouge %d est sorti vainqueur du combat !\n", manant->num);
-                            }
-                        }
-                    }
-                    break;
-                }
-                vInter = vInter->vNext;printf("ok11\n");
-            }
-            if (monde->plateau[persoInterm->x][persoInterm->y]->chateau != NULL && k == 1) {
-                k = engageCombatPerso(monde, persoInterm, monde->plateau[persoInterm->x][persoInterm->y]->chateau);
-            }
+    Personnage** tableauBleu = malloc(len*sizeof(Personnage*));
+    Personnage** tableauRouge = malloc(len*sizeof(Personnage*));
+    for (int i = 0; i<len; i++) {
+        tableauBleu[i] = NULL;
+        tableauRouge[i] = NULL;
+    }
+    persoInter = monde->plateau[x][y]->perso;
+    int i = 0, j = 0;
+    while (persoInter != NULL) {
+        if (persoInter->couleur == Bleu) {
+            tableauBleu[i] = persoInter;
+            i++;
+        } else {
+            tableauRouge[j] = persoInter;
+            j++;
         }
-        persoInterm = persoInterm->next;
+        persoInter = persoInter->vNext;
+    }
+    if (monde->plateau[x][y]->chateau != NULL) {
+        if (monde->plateau[x][y]->chateau->couleur == Bleu) {
+            tableauBleu[i] = monde->plateau[x][y]->chateau;
+        } else {
+            tableauRouge[j] = monde->plateau[x][y]->chateau;
+        }
+    }
+    int vieManant;
+    Personnage**  tabAtt,** tabDef;
+    if (manant->couleur == Bleu) {
+        tabAtt = tableauBleu;
+        tabDef = tableauRouge;
+    } else {
+        tabAtt = tableauRouge;
+        tabDef = tableauBleu;
+    }
+    if (tabDef[0] != NULL) {
+        i = 1;
+        j = 1;
+        Personnage* persoAttaque = tabAtt[0];
+        Personnage* persoDefend = tabDef[0];
+        while (persoAttaque != NULL && persoDefend != NULL) {
+            vieManant = 1;
+            while (persoDefend != NULL && vieManant == 1) {
+                if (rand() % (persoAttaque->coupDeProd + persoDefend->coupDeProd) < persoAttaque->coupDeProd) {
+                    if (persoAttaque->couleur == Bleu) {
+                        printf("Le manant bleu %d est sorti vainqueur du combat !\n", persoAttaque->num);
+                    } else {
+                        printf("Le manant rouge %d est sorti vainqueur du combat !\n", persoAttaque->num);
+                    }
+                    if (persoDefend->vNext != NULL) {
+                        persoDefend = persoDefend->vNext;
+                        deletePerso(monde, persoDefend->vPrevious);
+                    } else {
+                        deletePerso(monde, persoDefend);
+                    }
+                    persoDefend = tabDef[j];
+                    j++;
+                } else {
+                    if (persoAttaque->couleur == Bleu) {
+                        printf("Le manant bleu %d est mort au combat...\n", persoAttaque->num);
+                    } else {
+                        printf("Le manant rouge %d est mort au combat...\n", persoAttaque->num);
+                    }
+                    deletePerso(monde, persoAttaque);
+                    vieManant = 0;
+                }
+            }
+            persoAttaque = tabAtt[i];
+            i++;
+        }
     }
 }

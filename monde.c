@@ -22,6 +22,8 @@ void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Person
     perso->previous->next = perso;
     if (monde->plateau[x][y]->perso == NULL) {
         monde->plateau[x][y]->perso = perso;
+        perso->vNext = NULL;
+        perso->vPrevious = NULL;
     } else {
         monde->plateau[x][y]->perso->vPrevious = perso;
         perso->vNext = monde->plateau[x][y]->perso;
@@ -36,8 +38,6 @@ void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Person
     } else {
         perso->coupDeProd = 1;
     }
-    perso->vNext = NULL;
-    perso->vPrevious = NULL;
 }
 
 Monde* initMonde(void){
