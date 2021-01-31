@@ -38,6 +38,8 @@ Monde* initMonde(void);
 
 int incrementAndGet(Personnage* perso);
 
+int nbreMaxPerso(Monde* monde);
+
 void afficheMonde(Monde* monde, int tresorBleu, int tresorRouge, Couleur couleur, int t);
 
 #endif
