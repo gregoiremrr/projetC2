@@ -6,7 +6,7 @@
 #include "monde.h"
 
 
-void save(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tresorBleu){
+void sauv(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tresorBleu){
     fprintf(fichier, "8 8\n");
     if (fichier != NULL){
         if (couleur == Bleu) {
@@ -70,7 +70,7 @@ void save(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tre
     }
 }
 //Renvoie la longueur du fichier
-int lenFichier(FILE* fichier){
+int longueurFichier(FILE* fichier){
     char a = 'a', ligne[100];
     int len = 0;
     while (a != EOF) {
@@ -83,8 +83,8 @@ int lenFichier(FILE* fichier){
     return len;
 }
 
-Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
-    int len = lenFichier(fichier);
+Monde* chargeFichier(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
+    int len = longueurFichier(fichier);
     rewind(fichier);
      //Un tableau qui va contenir une ligne du fichier par case
     char** lignes = malloc((len)*sizeof(char*));
@@ -144,7 +144,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                     personnages[j]->typeProd = nul;
                     personnages[j]->tpsProd = 0;
                 }
-                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->num = incrementPerso(personnages[j]);
                 personnages[j]->y = atoi(lignes[i]+4);
                 personnages[j]->yDest = personnages[j]->y;
                 personnages[j]->x = atoi(lignes[i]+6);
@@ -157,7 +157,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->x =  atoi(lignes[i]+6);
                 personnages[j]->yDest = atoi(lignes[i]+8);
                 personnages[j]->xDest = atoi(lignes[i]+10);
-                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->num = incrementPerso(personnages[j]);
                 Personnage* persoInter = mainRouge;
                 while (persoInter->next){
                     persoInter = persoInter->next;
@@ -172,7 +172,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->x =  atoi(lignes[i]+6);
                 personnages[j]->yDest = atoi(lignes[i]+8);
                 personnages[j]->xDest = atoi(lignes[i]+10);
-                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->num = incrementPerso(personnages[j]);
                 //mainRouge représente le dernier chateau Rouge retrouvé 
                 //dans le fichier pour pouvoir le lier à ses agents
                 Personnage* persoInter = mainRouge;
@@ -194,7 +194,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 }
                 a++;
                 personnages[j]->xDest = atoi(a);
-                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->num = incrementPerso(personnages[j]);
                 Personnage* persoInter = mainRouge;
                 while (persoInter->next){
                     persoInter = persoInter->next;
@@ -230,7 +230,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                     personnages[j]->typeProd = nul;
                     personnages[j]->tpsProd = 0;
                 }
-                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->num = incrementPerso(personnages[j]);
                 personnages[j]->y = atoi(lignes[i]+4);
                 personnages[j]->yDest = personnages[j]->y;
                 personnages[j]->x = atoi(lignes[i]+6);
@@ -242,7 +242,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->x =  atoi(lignes[i]+6);
                 personnages[j]->yDest = atoi(lignes[i]+8);
                 personnages[j]->xDest = atoi(lignes[i]+10);
-                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->num = incrementPerso(personnages[j]);
                 Personnage* persoInter = mainBleu;
                 while (persoInter->next){
                     persoInter = persoInter->next;
@@ -257,7 +257,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 personnages[j]->x =  atoi(lignes[i]+6);
                 personnages[j]->yDest = atoi(lignes[i]+8);
                 personnages[j]->xDest = atoi(lignes[i]+10);
-                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->num = incrementPerso(personnages[j]);
                 Personnage* persoInter = mainBleu;
                 while (persoInter->next){
                     persoInter = persoInter->next;
@@ -277,7 +277,7 @@ Monde* chargeFile(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debut){
                 }
                 a++;
                 personnages[j]->xDest = atoi(a);
-                personnages[j]->num = incrementAndGet(personnages[j]);
+                personnages[j]->num = incrementPerso(personnages[j]);
                 Personnage* persoInter = mainBleu;
                 while (persoInter->next){
                     persoInter = persoInter->next;

@@ -100,7 +100,7 @@ void actionSeigneur(Monde* monde, Personnage* perso, int* tresor) {
         }
         switch(act) {
             case 's' :
-                deletePerso(monde, perso);
+                suppPerso(monde, perso);
                 break;
             case 'D' :
                 do{
@@ -143,7 +143,7 @@ void actionGuerrier(Monde* monde, Personnage* perso) {
         }
         switch(act) {
             case 's' :
-                deletePerso(monde, perso);
+                suppPerso(monde, perso);
                 break;
             case 'D' :
                 do{
@@ -182,7 +182,7 @@ void actionManant(Monde* monde, Personnage* perso, int* tresor) {
         }
         switch (act){
             case 's' :
-                deletePerso(monde, perso);
+                suppPerso(monde, perso);
                 break;
             case 'D' :
                 do{

@@ -210,9 +210,9 @@ int engageCombatPerso(Monde* monde, Personnage* persoAttaque, Personnage* persoD
     int p = 1;
     if (persoDefend->nom == Chateau) {
         if (rand() % (persoAttaque->coupDeProd + persoDefend->coupDeProd) < persoAttaque->coupDeProd) {
-            deletePerso(monde, persoDefend);
+            suppPerso(monde, persoDefend);
         } else {
-            deletePerso(monde, persoAttaque);
+            suppPerso(monde, persoAttaque);
             p = 0;
         }
     } else {
@@ -221,12 +221,12 @@ int engageCombatPerso(Monde* monde, Personnage* persoAttaque, Personnage* persoD
             if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
                 if (persoInter->vNext != NULL) {
                     persoInter = persoInter->vNext;
-                    deletePerso(monde, persoInter->vPrevious);
+                    suppPerso(monde, persoInter->vPrevious);
                 } else {
-                    deletePerso(monde, persoInter);
+                    suppPerso(monde, persoInter);
                 }
             } else {
-                deletePerso(monde, persoAttaque);
+                suppPerso(monde, persoAttaque);
                 p = 0;
             }
             persoInter = persoInter->vNext;
@@ -294,9 +294,9 @@ void verifCombat(Monde* monde, Personnage* manant){
                     }
                     if (persoDefend->vNext != NULL) {
                         persoDefend = persoDefend->vNext;
-                        deletePerso(monde, persoDefend->vPrevious);
+                        suppPerso(monde, persoDefend->vPrevious);
                     } else {
-                        deletePerso(monde, persoDefend);
+                        suppPerso(monde, persoDefend);
                     }
                     persoDefend = tabDef[j];
                     j++;
@@ -306,7 +306,7 @@ void verifCombat(Monde* monde, Personnage* manant){
                     } else {
                         printf("Le manant rouge %d est mort au combat...\n", persoAttaque->num);
                     }
-                    deletePerso(monde, persoAttaque);
+                    suppPerso(monde, persoAttaque);
                     vieManant = 0;
                 }
             }

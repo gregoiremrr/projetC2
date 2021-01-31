@@ -24,9 +24,9 @@ int main() {
     char nomPartie[256];
     int debut;
     do {
-        printf("Voulez-vous charger une partie? (Y/N)\n");
+        printf("Voulez-vous charger une partie? (O/N)\n");
         scanf(" %c", &charg);
-    } while (charg != 'Y' && charg != 'N');
+    } while (charg != 'O' && charg != 'N');
     Monde* monde;
     int tourNum = 0;
     int* tresorRouge = malloc(sizeof(int)),* tresorBleu = malloc(sizeof(int));
@@ -51,7 +51,7 @@ int main() {
                 printf("Aucune partie de ce nom trouvee...\n");
             }
         } while (fichier == NULL);
-        monde = chargeFile(fichier, tresorBleu, tresorRouge, &debut);
+        monde = chargeFichier(fichier, tresorBleu, tresorRouge, &debut);
     }
     afficheMonde(monde, *tresorBleu, *tresorRouge, Bleu, 1);
     printf("\n");
@@ -59,11 +59,11 @@ int main() {
         sauvegarde = 'a';
         if (tourNum > 0) {
             do {
-                printf("Voulez-vous sauvegarder ?\n");
+                printf("Voulez-vous sauvegarder ? (O/N)\n");
                 scanf(" %c", &sauvegarde);
-            } while (sauvegarde != 'Y' && sauvegarde != 'N');
+            } while (sauvegarde != 'O' && sauvegarde != 'N');
         }
-        if (sauvegarde == 'Y') {
+        if (sauvegarde == 'O') {
             printf("Entrez le nom du fichier de sauvegarde :\n");
             scanf("%s", nomFichier);
             int strLen = strlen(nomFichier);
@@ -73,18 +73,18 @@ int main() {
             nomFichier[strLen+3] = 't';
             nomFichier[strLen+4] = '\0';
             if (tourNum % 2 == debut) {
-                save(fopen(nomFichier, "w+"), monde, Bleu, *tresorRouge, *tresorBleu);
+                sauv(fopen(nomFichier, "w+"), monde, Bleu, *tresorRouge, *tresorBleu);
             } else {
-                save(fopen(nomFichier, "w+"), monde, Rouge, *tresorRouge, *tresorBleu);
+                sauv(fopen(nomFichier, "w+"), monde, Rouge, *tresorRouge, *tresorBleu);
             }
         }
         fin = 'a';
         if (tourNum > 0) {
             do{
-                printf("Voulez vous quitter la partie? (Y/N)\n");
+                printf("Voulez vous quitter la partie? (O/N)\n");
                 scanf(" %c", &fin);
-            } while (fin != 'Y' && fin !='N');
-            if (fin == 'Y') {
+            } while (fin != 'O' && fin !='N');
+            if (fin == 'O') {
                 printf("Fin de la partie.\n");
                 partie = 0;
                 s = score(monde, *tresorBleu, *tresorRouge, tourNum);

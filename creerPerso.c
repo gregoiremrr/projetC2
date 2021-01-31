@@ -61,7 +61,7 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     nvPerso->yDest = nvPerso->y;
     nvPerso->vNext = NULL;
     nvPerso->vPrevious = NULL;
-    nvPerso->num = incrementAndGet(nvPerso);
+    nvPerso->num = incrementPerso(nvPerso);
     if (typeProd == Seigneur) {
         nvPerso->coupDeProd = 20;
     } else if (typeProd == Guerrier) {
@@ -79,7 +79,7 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     monde->plateau[cLibre[0]][cLibre[1]]->perso = nvPerso;
 }
 
-void deletePerso(Monde* monde, Personnage* perso){
+void suppPerso(Monde* monde, Personnage* perso){
 
     // On récupère la couleur de l'équipe perdante pour changer la couleur des manants
     Couleur couleurManant = perso->couleur;
@@ -191,7 +191,7 @@ void creerChateau(Monde* monde, Personnage* perso){
         chateau = chateau->previous;
     }
     Couleur couleur = perso->couleur;
-    deletePerso(monde, perso);
+    suppPerso(monde, perso);
     Personnage* nvChateau = malloc(sizeof(Personnage));
     nvChateau->nom = Chateau;
     nvChateau->couleur = couleur;
@@ -207,6 +207,6 @@ void creerChateau(Monde* monde, Personnage* perso){
     nvChateau->typeProd = nul;
     nvChateau->next = NULL;
     nvChateau->previous = NULL;
-    nvChateau->num = incrementAndGet(nvChateau);
+    nvChateau->num = incrementPerso(nvChateau);
     monde->plateau[x][y]->chateau = nvChateau;
 }

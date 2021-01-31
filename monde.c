@@ -30,7 +30,7 @@ void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Person
         perso->vPrevious = NULL;
         monde->plateau[x][y]->perso = perso;
     }
-    perso->num = incrementAndGet(perso);
+    perso->num = incrementPerso(perso);
     if (nom == Seigneur) {
         perso->coupDeProd = 20;
     } else if (nom == Guerrier) {
@@ -65,7 +65,7 @@ Monde* initMonde(void){
     monde->chateauRouge->vNext = NULL;
     monde->chateauRouge->vPrevious = NULL;
     monde->chateauRouge->coupDeProd = 30;
-    monde->chateauRouge->num = incrementAndGet(monde->chateauRouge);
+    monde->chateauRouge->num = incrementPerso(monde->chateauRouge);
     monde->plateau[7][7]->chateau = monde->chateauRouge;
     monde->plateau[7][7]->perso = NULL;
     initPerso(monde, Seigneur, 7, 6, Rouge, monde->chateauRouge);
@@ -84,7 +84,7 @@ Monde* initMonde(void){
     monde->chateauBleu->vNext = NULL;
     monde->chateauBleu->vPrevious = NULL;
     monde->chateauBleu->coupDeProd = 30;
-    monde->chateauBleu->num = incrementAndGet(monde->chateauBleu);
+    monde->chateauBleu->num = incrementPerso(monde->chateauBleu);
     monde->plateau[0][0]->chateau = monde->chateauBleu;
     monde->plateau[0][0]->perso = NULL;
     initPerso(monde , Seigneur , 0 , 1 , Bleu , monde->chateauBleu);
@@ -96,7 +96,7 @@ Monde* initMonde(void){
 int r_chateau = 0, r_guerrier = 0, r_seigneur = 0, r_manant = 0;
 int b_chateau = 0, b_guerrier = 0, b_seigneur = 0, b_manant = 0;
 
-int incrementAndGet(Personnage* perso){
+int incrementPerso(Personnage* perso){
     if (perso->couleur == Rouge) {
         switch (perso->nom) {
             case Chateau :

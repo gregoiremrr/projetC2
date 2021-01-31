@@ -6,11 +6,11 @@
 
 #include "monde.h"
 
-void save(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tresorBleu);
+void sauv(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tresorBleu);
 
-int lenFichier(FILE* fichier);
+int longueurFichier(FILE* fichier);
 
-Monde* chargeFile(FILE* fichier, int* debut, int *tresorBleu, int *tresorRouge);
+Monde* chargeFichier(FILE* fichier, int* debut, int *tresorBleu, int *tresorRouge);
 
 int charEstDans(char c, char* str);
 

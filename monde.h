@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
- extern int partie;
+extern int partie;
 
 typedef enum {Bleu, Rouge} Couleur;
 
@@ -36,7 +36,7 @@ void initPerso(Monde* monde, nomPerso nom, int x, int y, Couleur couleur, Person
 
 Monde* initMonde(void);
 
-int incrementAndGet(Personnage* perso);
+int incrementPerso(Personnage* perso);
 
 int nbreMaxPerso(Monde* monde);
 
