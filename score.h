@@ -14,7 +14,7 @@ typedef struct score {
 	char nom[256];
 } Score;
 
-int score(Monde* monde);
+int score(Monde* monde, int c);
 
 void ajouteScore(int newScore);
 

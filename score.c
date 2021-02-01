@@ -5,42 +5,78 @@
 #include "monde.h"
 
 //calcul du score selon une formule choisie
-int score(Monde* monde) {
+//c indique de quelle manière a ete gagnee la partie
+int score(Monde* monde, int c) {
     Personnage* chateau = monde->chateauBleu;
     Personnage* perso = chateau->next;
     int scoreB = 0;
     int scoreR = 0;
     int scoreF;
-    while(chateau != NULL){
-        scoreB += 30;
-        while(perso) {
-            if (perso->nom == Seigneur) {
-                scoreB += 20;
-            }else if (perso->nom == Guerrier){
-                scoreB += 5;
-            }else{
-                scoreB += 1;
+    if (c == 0) {
+        while(chateau != NULL){
+            scoreB += 30;
+            while(perso) {
+                if (perso->nom == Seigneur) {
+                    scoreB += 20;
+                }else if (perso->nom == Guerrier){
+                    scoreB += 5;
+                }else{
+                    scoreB += 1;
+                }
+                perso = perso->next;
             }
-            perso = perso->next;
+            chateau = chateau->vNext;
         }
-        chateau = chateau->vNext;
-    }
-    chateau = monde->chateauRouge;
-    perso = chateau->next;
-    while(chateau != NULL){
-        scoreR += 30;
-        while(perso) {
-            if (perso->nom == Seigneur) {
-                scoreR += 20;
-            }else if (perso->nom == Guerrier){
-                scoreR += 5;
-            }else{
-                scoreR += 1;
+        chateau = monde->chateauRouge;
+        perso = chateau->next;
+        while(chateau != NULL){
+            scoreR += 30;
+            while(perso) {
+                if (perso->nom == Seigneur) {
+                    scoreR += 20;
+                }else if (perso->nom == Guerrier){
+                    scoreR += 5;
+                }else{
+                    scoreR += 1;
+                }
+                perso = perso->next;
             }
-            perso = perso->next;
+            chateau = chateau->vNext;
         }
-        chateau = chateau->vNext;
+    } else if (c == 1) {
+        while(chateau != NULL){
+            scoreB += 30;
+            while(perso) {
+                if (perso->nom == Seigneur) {
+                    scoreB += 20;
+                }else if (perso->nom == Guerrier){
+                    scoreB += 5;
+                }else{
+                    scoreB += 1;
+                }
+                perso = perso->next;
+            }
+            chateau = chateau->vNext;
+        }
+    } else {
+        chateau = monde->chateauRouge;
+        perso = chateau->next;
+        while(chateau != NULL){
+            scoreR += 30;
+            while(perso) {
+                if (perso->nom == Seigneur) {
+                    scoreR += 20;
+                }else if (perso->nom == Guerrier){
+                    scoreR += 5;
+                }else{
+                    scoreR += 1;
+                }
+                perso = perso->next;
+            }
+            chateau = chateau->vNext;
+        }
     }
+    
     scoreF = scoreB - scoreR;
     if (scoreF < 0 ) {
         scoreF = ((-scoreF)*15) + *tresorRouge;

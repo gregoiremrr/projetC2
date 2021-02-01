@@ -90,7 +90,7 @@ int main() {
             if (fin == 'O') {
                 printf("Fin de la partie.\n");
                 partie = 0;
-                s = score(monde);
+                s = score(monde, 0);
                 ajouteScore(s);
                 continue;
             }

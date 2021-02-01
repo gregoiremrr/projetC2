@@ -96,7 +96,7 @@ void suppPerso(Monde* monde, Personnage* perso){
                     monde->chateauBleu = perso->vNext;
                 } else {
                     partie = 0;
-                    int s = score(monde);
+                    int s = score(monde, 2);
                     ajouteScore(s);
                     monde->chateauBleu = NULL;
                 }
@@ -107,7 +107,7 @@ void suppPerso(Monde* monde, Personnage* perso){
                     monde->chateauRouge = perso->vNext;
                 } else {
                     partie = 0;
-                    int s = score(monde);
+                    int s = score(monde, 1);
                     ajouteScore(s);
                     monde->chateauRouge = NULL;
                 }
