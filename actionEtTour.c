@@ -84,7 +84,7 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2)
 void actionSeigneur(Monde* monde, Personnage* perso, int* tresor) {
     if (perso->x == perso->xDest && perso->y == perso->yDest) {
         char act = 'a';
-        while (act != 's' && act != 'D' && (act != 'I' || *tresor < 30)) {
+        while (act != 's' && act != 'D' && (act != 'I' || *tresor < 30 || monde->plateau[perso->x][perso->y]->chateau != NULL)) {
             if (perso->couleur == Bleu) {
                 printf("Entrez une action pour le seigneur bleu %d :(I/D/s)\n", perso->num);
             } else {
@@ -98,6 +98,8 @@ void actionSeigneur(Monde* monde, Personnage* perso, int* tresor) {
                     printf("Tresor rouge insuffisant... (%d piece(s))\n", *tresor);
                 }
                 
+            } else if (act == 'I' && monde->plateau[perso->x][perso->y]->chateau != NULL) {
+                printf("Un chateau est deja present sur cette case...\n");
             }
         }
         switch(act) {
