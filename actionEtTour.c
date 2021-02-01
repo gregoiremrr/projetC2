@@ -107,9 +107,9 @@ void actionSeigneur(Monde* monde, Personnage* perso, int* tresor) {
             case 'D' :
                 do{
                     if (perso->couleur == Bleu) {
-                        printf("Entrez une destination pour le seigneur bleu %d :\n", perso->num);
+                        printf("Entrez une destination pour le seigneur bleu %d :(col:1-8 ,ligne: 1-8)\n", perso->num);
                     } else {
-                        printf("Entrez une destination pour le seigneur rouge %d :\n", perso->num);
+                        printf("Entrez une destination pour le seigneur rouge %d :(col:1-8 ,ligne: 1-8)\n", perso->num);
                     }
                     scanf("%d",&perso->yDest);
                     perso->yDest -= 1;
@@ -151,9 +151,9 @@ void actionGuerrier(Monde* monde, Personnage* perso) {
             case 'D' :
                 do{
                     if (perso->couleur == Bleu) {
-                        printf("Entrez une destination pour le guerrier bleu %d :\n", perso->num);
+                        printf("Entrez une destination pour le guerrier bleu %d :(col:1-8 ,ligne: 1-8)\n", perso->num);
                     } else {
-                        printf("Entrez une destination pour le guerrier rouge %d :\n", perso->num);
+                        printf("Entrez une destination pour le guerrier rouge %d :(col:1-8 ,ligne: 1-8)\n", perso->num);
                     }
                     scanf("%d",&perso->yDest);
                     perso->yDest -= 1;
@@ -191,9 +191,9 @@ void actionManant(Monde* monde, Personnage* perso, int* tresor) {
             case 'D' :
                 do{
                     if (perso->couleur == Bleu) {
-                        printf("Entrez une destination pour le manant bleu %d :\n", perso->num);
+                        printf("Entrez une destination pour le manant bleu %d :(col:1-8 ,ligne: 1-8)\n", perso->num);
                     } else {
-                        printf("Entrez une destination pour le manant rouge %d :\n", perso->num);
+                        printf("Entrez une destination pour le manant rouge %d :(col:1-8 ,ligne: 1-8)\n", perso->num);
                     }
                     scanf("%d",&perso->yDest);
                     perso->yDest -= 1;
