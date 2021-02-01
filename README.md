@@ -12,6 +12,7 @@ Running might not be possible due to permission issues,
 
 `chown your_username main.out`
 
+Notez qu'il faut agrandir le terminal sur tout l'ecran pour avoir un affichage bien clair du plateau.
 1)Touches du clavier utiles au jeu:
 
 -Pour l'action d'un chateau:
