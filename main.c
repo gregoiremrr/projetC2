@@ -41,7 +41,7 @@ int main() {
     } else {
         FILE* fichier;
         do {
-            printf("Rentrez le nom de la partie a charger :\n");
+            printf("Rentrez le nom de la partie a charger :(Sans l'extension.got)\n");
             scanf("%s", nomPartie);
             int strLEN = strlen(nomPartie);
             nomPartie[strLEN] = '.';
@@ -67,7 +67,7 @@ int main() {
             } while (sauvegarde != 'O' && sauvegarde != 'N');
         }
         if (sauvegarde == 'O') {
-            printf("Entrez le nom du fichier de sauvegarde :\n");
+            printf("Entrez le nom du fichier de sauvegarde :(Sans l'extension.got)\n");
             scanf("%s", nomFichier);
             int strLen = strlen(nomFichier);
             nomFichier[strLen] = '.';
