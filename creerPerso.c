@@ -4,8 +4,9 @@
 #include "creerPerso.h"
 #include "monde.h"
 #include "deplacement.h"
+#include "score.h"
 
-//La fonction permet trouver la case libre la plus proche du chateau
+//La fonction permet trouver la case libre la plus proche du chateau donne
 int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd){
     int k = 1;
     int i = chateau->x, j = chateau->y;
@@ -50,6 +51,7 @@ int* caseLibre(Monde* monde, Personnage* chateau, nomPerso typeProd){
     return NULL;
 }
 
+//sert quand un chateau cree un nouveau personnage
 void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     Personnage* nvPerso = malloc(sizeof(Personnage));
     nvPerso->nom = typeProd;
@@ -77,13 +79,14 @@ void creerPersonnage(Monde* monde, Personnage* chateau, nomPerso typeProd){
     nvPerso->next = NULL;
     nvPerso->previous->next = nvPerso;
     monde->plateau[cLibre[0]][cLibre[1]]->perso = nvPerso;
+    free(cLibre);
 }
 
 void suppPerso(Monde* monde, Personnage* perso){
 
-    // On récupère la couleur de l'équipe perdante pour changer la couleur des manants
+    // On récupère la couleur de l'équipe perdante avant de changer la couleur des manants
     Couleur couleurManant = perso->couleur;
-    
+    //gere le cas du chateau, en supprimant les agents qui lui sont lies et changent les manants de couleur
     if (perso->nom == Chateau) {
         monde->plateau[perso->x][perso->y]->chateau = NULL;
         Personnage* persoInter = perso;
@@ -92,8 +95,10 @@ void suppPerso(Monde* monde, Personnage* perso){
                 if (perso->vNext != NULL) {
                     monde->chateauBleu = perso->vNext;
                 } else {
-                    printf("L'equipe rouge a gagne !\n");
                     partie = 0;
+                    int s = score(monde);
+                    ajouteScore(s);
+                    monde->chateauBleu = NULL;
                 }
             }
         } else {
@@ -101,8 +106,10 @@ void suppPerso(Monde* monde, Personnage* perso){
                 if (perso->vNext != NULL) {
                     monde->chateauRouge = perso->vNext;
                 } else {
-                    printf("L'equipe bleue a gagne !\n");
                     partie = 0;
+                    int s = score(monde);
+                    ajouteScore(s);
+                    monde->chateauRouge = NULL;
                 }
             }
         }
@@ -166,7 +173,7 @@ void suppPerso(Monde* monde, Personnage* perso){
             }
             persoVerif = persoVerif->next;
         }
-    } else {
+    } else {//gere le cas ou il s'agit d'un personnage
         if (perso->vPrevious == NULL) {
             monde->plateau[perso->x][perso->y]->perso = perso->vNext;
         } else {
@@ -183,6 +190,7 @@ void suppPerso(Monde* monde, Personnage* perso){
     }
 }
 
+//sert lorsqu'un seigneur se transforme
 void creerChateau(Monde* monde, Personnage* perso){
     int x = perso->x;
     int y = perso->y;

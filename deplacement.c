@@ -97,7 +97,8 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
         persoInter->vNext = perso;
         perso->vPrevious = persoInter;
     //Si le personnage se déplace vers une case qui contient un chateau et un agent de même couleur
-    } else if (monde->plateau[perso->x+x][perso->y+y]->perso != NULL && monde->plateau[perso->x+x][perso->y+y]->chateau != NULL && monde->plateau[perso->x+x][perso->y+y]->perso->couleur == perso->couleur) {
+    } else if (monde->plateau[perso->x+x][perso->y+y]->perso != NULL 
+            && monde->plateau[perso->x+x][perso->y+y]->chateau != NULL && monde->plateau[perso->x+x][perso->y+y]->perso->couleur == perso->couleur) {
         monde->plateau[perso->x][perso->y]->perso = NULL;
         if (perso->vPrevious != NULL) {
             perso->vPrevious->vNext = perso->vNext;
@@ -207,8 +208,8 @@ void gereDeplacement(Monde* monde, Personnage* perso) {
 
 int engageCombatPerso(Monde* monde, Personnage* persoAttaque, Personnage* persoDefend){
     srand(time(NULL));
-    int p = 1;
-    if (persoDefend->nom == Chateau) {
+    int p = 1; //variable nous permettant de vérifier si l'attaquant est en vie
+    if (persoDefend->nom == Chateau) {//on gere le cas des chateau a part
         if (rand() % (persoAttaque->coupDeProd + persoDefend->coupDeProd) < persoAttaque->coupDeProd) {
             suppPerso(monde, persoDefend);
         } else {
@@ -217,19 +218,84 @@ int engageCombatPerso(Monde* monde, Personnage* persoAttaque, Personnage* persoD
         }
     } else {
         Personnage* persoInter = persoDefend;
+        Personnage* persoInterm;
+        int verif = 1; //variable nous permettant de verifier s'il y a encore des defenseurs
         while (persoInter != NULL && p == 1) {
-            if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
-                if (persoInter->vNext != NULL) {
-                    persoInter = persoInter->vNext;
-                    suppPerso(monde, persoInter->vPrevious);
+            verif = 1;
+            if (persoInter->nom == Guerrier) {//les guerriers se battent en premier
+                if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
+                    persoInterm = persoInter;
+                    while (persoInterm->vPrevious != NULL) {
+                        persoInterm = persoInterm->vPrevious;
+                    }
+                    persoDefend = persoInterm;
+                    if (persoInter->vNext != NULL) {
+                        persoInter = persoInter->vNext;
+                        suppPerso(monde, persoInter->vPrevious);
+                        verif = 0;
+                    } else {
+                        suppPerso(monde, persoInter);
+                    }
                 } else {
-                    suppPerso(monde, persoInter);
+                    suppPerso(monde, persoAttaque);
+                    p = 0;
                 }
-            } else {
-                suppPerso(monde, persoAttaque);
-                p = 0;
             }
-            persoInter = persoInter->vNext;
+            if (verif == 1) {
+                persoInter = persoInter->vNext;
+            }
+        }
+        persoInter = persoDefend;
+        while (persoInter != NULL && p == 1) {
+            verif = 1;
+            if (persoInter->nom == Seigneur) {//les seigneurs se battent en second
+                if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
+                    persoInterm = persoInter;
+                    while (persoInterm->vPrevious != NULL) {
+                        persoInterm = persoInterm->vPrevious;
+                    }
+                    persoDefend = persoInterm;
+                    if (persoInter->vNext != NULL) {
+                        persoInter = persoInter->vNext;
+                        suppPerso(monde, persoInter->vPrevious);
+                        verif = 0;
+                    } else {
+                        suppPerso(monde, persoInter);
+                    }
+                } else {
+                    suppPerso(monde, persoAttaque);
+                    p = 0;
+                }
+            }
+            if (verif == 1) {
+                persoInter = persoInter->vNext;
+            }
+        }
+        persoInter = persoDefend;
+        while (persoInter != NULL && p == 1) {
+            verif = 1;
+            if (persoInter->nom == Manant) {//les manants se battent en dernier
+                if (rand() % (persoAttaque->coupDeProd + persoInter->coupDeProd) < persoAttaque->coupDeProd) {
+                    persoInterm = persoInter;
+                    while (persoInterm->vPrevious != NULL) {
+                        persoInterm = persoInterm->vPrevious;
+                    }
+                    persoDefend = persoInterm;
+                    if (persoInter->vNext != NULL) {
+                        persoInter = persoInter->vNext;
+                        suppPerso(monde, persoInter->vPrevious);
+                        verif = 0;
+                    } else {
+                        suppPerso(monde, persoInter);
+                    }
+                } else {
+                    suppPerso(monde, persoAttaque);
+                    p = 0;
+                }
+            }
+            if (verif == 1) {
+                persoInter = persoInter->vNext;
+            }
         }
     }
     return p;
@@ -252,7 +318,7 @@ void verifCombat(Monde* monde, Personnage* manant){
     }
     persoInter = monde->plateau[x][y]->perso;
     int i = 0, j = 0;
-    while (persoInter != NULL) {
+    while (persoInter != NULL) {//on classe les personnages de la case dans deux tableaux selon leur couleur
         if (persoInter->couleur == Bleu) {
             tableauBleu[i] = persoInter;
             i++;
@@ -262,7 +328,7 @@ void verifCombat(Monde* monde, Personnage* manant){
         }
         persoInter = persoInter->vNext;
     }
-    if (monde->plateau[x][y]->chateau != NULL) {
+    if (monde->plateau[x][y]->chateau != NULL) {//on met le chateau le dernier puisque c'est le dernier a se battre
         if (monde->plateau[x][y]->chateau->couleur == Bleu) {
             tableauBleu[i] = monde->plateau[x][y]->chateau;
         } else {
@@ -278,7 +344,7 @@ void verifCombat(Monde* monde, Personnage* manant){
         tabAtt = tableauRouge;
         tabDef = tableauBleu;
     }
-    if (tabDef[0] != NULL) {
+    if (tabDef[0] != NULL) {//on provoque les combats
         i = 1;
         j = 1;
         Personnage* persoAttaque = tabAtt[0];
@@ -314,4 +380,6 @@ void verifCombat(Monde* monde, Personnage* manant){
             i++;
         }
     }
+    free(tableauRouge);
+    free(tableauBleu);
 }

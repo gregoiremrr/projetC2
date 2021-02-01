@@ -5,7 +5,7 @@
 #include "sauvegarde.h"
 #include "monde.h"
 
-
+//parcourt les listes doublements chainees de personnages afin de les rentrer dans l'orde dans le fichier
 void sauv(FILE* fichier, Monde* monde, Couleur couleur, int tresorRouge, int tresorBleu){
     fprintf(fichier, "8 8\n");
     if (fichier != NULL){
@@ -327,8 +327,16 @@ Monde* chargeFichier(FILE* fichier, int* tresorBleu, int* tresorRouge, int* debu
         chateauInter = chateauInter->vPrevious;
     }
     monde->chateauBleu = chateauInter;
+
+    //free des lignes
+    for (int i = 0; i < len; i++) {
+        free(lignes[i]);
+    }
+    free(lignes);
+
     return monde;
 }
+
 // renvoie 1 si un caractère donné apparait dans une chaine
 int charEstDans(char c, char* str) {
     int i = 0;

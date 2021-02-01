@@ -12,7 +12,9 @@
 #include "sauvegarde.h"
 #include "score.h"
 
+//variables globales
 int partie = 1;
+int* tresorBleu,* tresorRouge;
 
 int main() {
     srand(time(NULL));
@@ -29,7 +31,8 @@ int main() {
     } while (charg != 'O' && charg != 'N');
     Monde* monde;
     int tourNum = 0;
-    int* tresorRouge = malloc(sizeof(int)),* tresorBleu = malloc(sizeof(int));
+    tresorRouge = malloc(sizeof(int));
+    tresorBleu = malloc(sizeof(int));
     if (charg == 'N') {
         monde = initMonde();
         *tresorRouge = 50;
@@ -87,11 +90,13 @@ int main() {
             if (fin == 'O') {
                 printf("Fin de la partie.\n");
                 partie = 0;
-                s = score(monde, *tresorBleu, *tresorRouge, tourNum);
+                s = score(monde);
                 ajouteScore(s);
                 continue;
             }
         }
+        //debut de la partie
+        //'debut' s'incremente et la couleur qui joue change donc a chaque tour
         if(tourNum % 2 == debut){
             printf("L'equipe \033[34mbleue\033[37m\033[49m joue !\n\n");
             tour(monde, Bleu, tresorBleu, tresorRouge);
@@ -101,5 +106,48 @@ int main() {
         }
         tourNum++;
     }
+
+    //debut des free
+    free(tresorBleu);
+    free(tresorRouge);
+    Personnage* chateauInter = monde->chateauBleu;
+    if (chateauInter != NULL) {
+        Personnage* persoInter = chateauInter->next;
+        while (chateauInter->vNext != NULL) {
+            while (persoInter->next != NULL) {
+                persoInter = persoInter->next;
+                free(persoInter->previous);
+            }
+            free(persoInter);
+            chateauInter = chateauInter->vNext;
+            free(chateauInter->vPrevious);
+        }
+        free(chateauInter);
+    }
+
+    chateauInter = monde->chateauRouge;
+    if (chateauInter != NULL) {
+        Personnage* persoInter = chateauInter->next;
+        while (chateauInter->vNext != NULL) {
+            while (persoInter->next != NULL) {
+                persoInter = persoInter->next;
+                free(persoInter->previous);
+            }
+            free(persoInter);
+            chateauInter = chateauInter->vNext;
+            free(chateauInter->vPrevious);
+        }
+        free(chateauInter);
+    }
+
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            free(monde->plateau[i][j]);
+        }
+    }
+
+    free(monde);
+    
+    //fin des free
     return 0;
 }

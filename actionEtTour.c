@@ -9,6 +9,7 @@
 #include "creerPerso.h"
 #include "deplacement.h"
 
+//verifie si le chateau est deja en train de jouer et sinon lui demande une action
 void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2) {
     if (chateau->tpsProd > 0) {
         if (chateau->tpsProd > 1) {
@@ -79,6 +80,7 @@ void actionChateau(Monde* monde, Personnage* chateau, int* tresor, int* tresor2)
     }
 }
 
+//verifie si le seigneur est deja en train de jouer et sinon lui demande une action
 void actionSeigneur(Monde* monde, Personnage* perso, int* tresor) {
     if (perso->x == perso->xDest && perso->y == perso->yDest) {
         char act = 'a';
@@ -130,6 +132,7 @@ void actionSeigneur(Monde* monde, Personnage* perso, int* tresor) {
     }
 }
 
+//verifie si le guerrier est deja en train de jouer et sinon lui demande une action
 void actionGuerrier(Monde* monde, Personnage* perso) {
     if (perso->x == perso->xDest && perso->y == perso->yDest) {
         char act = 'a';
@@ -169,6 +172,7 @@ void actionGuerrier(Monde* monde, Personnage* perso) {
     }
 }
 
+//verifie si le manant est deja en train de jouer et sinon lui demande une action
 void actionManant(Monde* monde, Personnage* perso, int* tresor) {
     if (perso->x == perso->xDest && perso->y == perso->yDest) {
         char act = 'a';
@@ -217,6 +221,9 @@ void actionManant(Monde* monde, Personnage* perso, int* tresor) {
     }
 }
 
+//gere le tour de chaque couleur en demandant d'abord au chateau puis aux agents
+//tresor est le tresor de l'equipe en train de jouer
+//tresor2 est le tresor de l'equipe adverse
 void tour(Monde* monde, Couleur couleur, int* tresor, int* tresor2){
     Personnage* chateau;
     if (couleur == Bleu) {

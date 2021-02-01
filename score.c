@@ -4,7 +4,8 @@
 #include "score.h"
 #include "monde.h"
 
-int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {
+//calcul du score selon une formule choisie
+int score(Monde* monde) {
     Personnage* chateau = monde->chateauBleu;
     Personnage* perso = chateau->next;
     int scoreB = 0;
@@ -42,10 +43,10 @@ int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {
     }
     scoreF = scoreB - scoreR;
     if (scoreF < 0 ) {
-        scoreF = ((-scoreF)*15)+tresorRouge;
+        scoreF = ((-scoreF)*15) + *tresorRouge;
         printf("Les rouges remportent la partie avec pour score : %d\n", scoreF);
     } else if (scoreF > 0) {
-        scoreF = (scoreF*15)+tresorBleu;
+        scoreF = (scoreF*15) + *tresorBleu;
         printf("Les bleus remportent la partie avec pour score : %d\n", scoreF);
     } else {
         printf("Il y a égalité... Personne n'a gagné (score nul)");
@@ -53,6 +54,8 @@ int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum) {
     return scoreF;
 }
 
+//recuperation dans le tableau de maillon des scores
+//et noms et reecriture du fichier avec le nouveau score en plus
 void ajouteScore(int newScore) {
 	FILE* fichierR = fopen("sauvegarde.txt", "r");
     
@@ -97,6 +100,11 @@ void ajouteScore(int newScore) {
 		} else {
 			printf("Erreur lors de l'ouverture du fichier...\n");
 		}
+        //free des maillons
+        for (int i = 0; i < 11; i++) {
+            free(maillons[i]);
+        }
+        free(maillons);
 	} else {
 		FILE* f = fopen("sauvegarde.txt", "w");
 		if (f != NULL) {

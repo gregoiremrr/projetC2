@@ -6,12 +6,15 @@
 
 #include "monde.h"
 
+extern int* tresorBleu;
+extern int* tresorRouge;
+
 typedef struct score {
 	int valeur;
 	char nom[256];
 } Score;
 
-int score(Monde* monde, int tresorBleu, int tresorRouge, int tourNum);
+int score(Monde* monde);
 
 void ajouteScore(int newScore);
 

@@ -92,6 +92,7 @@ Monde* initMonde(void){
 
     return monde;
 }
+
 // Initialisation de variables globales qui désignent le nombre de chaque chateau/agent de chaque couleur
 int r_chateau = 0, r_guerrier = 0, r_seigneur = 0, r_manant = 0;
 int b_chateau = 0, b_guerrier = 0, b_seigneur = 0, b_manant = 0;
@@ -126,6 +127,7 @@ int incrementPerso(Personnage* perso){
     }
 }
 
+//fonction qui aide à afficher le monde en donnant le nombre max de personnages sur une case
 int nbreMaxPerso(Monde* monde){
     int max = 0, compteur;
     for (int i = 0; i<8; i++) {
@@ -149,6 +151,7 @@ int nbreMaxPerso(Monde* monde){
     return max;
 }
 
+//parcourt toutes les listes doublement chainees de personnages
 void afficheMonde(Monde* monde, int tresor, int tresor2, Couleur couleur, int t){
     int max = nbreMaxPerso(monde), nbre;
     if (t==1) {
